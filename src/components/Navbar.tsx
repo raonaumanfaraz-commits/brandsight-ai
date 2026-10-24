@@ -76,10 +76,11 @@ export default function Navbar() {
             fontWeight: 500,
             color: 'var(--text-muted)',
           }}>
-            <a href="#how-it-works" style={{ transition: 'color 0.2s' }}>How It Works</a>
-            <a href="#live-demo" style={{ transition: 'color 0.2s' }}>Live Scanner</a>
-            <a href="#pricing" style={{ transition: 'color 0.2s' }}>Pricing</a>
-            <a href="#guardrails" style={{ transition: 'color 0.2s' }}>Cost Guardrails</a>
+            <a href="/#how-it-works" style={{ transition: 'color 0.2s' }}>How It Works</a>
+            <a href="/#live-demo" style={{ transition: 'color 0.2s' }}>Live Scanner</a>
+            <a href="/#pricing" style={{ transition: 'color 0.2s' }}>Pricing</a>
+            <a href="/#guardrails" style={{ transition: 'color 0.2s' }}>Cost Guardrails</a>
+            <Link href="/blog" style={{ transition: 'color 0.2s' }}>Blog</Link>
           </nav>
 
           {/* Right Action Buttons */}
