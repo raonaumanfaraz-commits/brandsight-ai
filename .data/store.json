@@ -1,0 +1,472 @@
+{
+  "profile": {
+    "id": "user_default",
+    "email": "admin@brandsight.ai",
+    "plan_tier": "free",
+    "brands_limit": 1,
+    "prompts_limit": 5,
+    "check_frequency": "weekly",
+    "white_label_enabled": false,
+    "created_at": "2026-10-24T07:15:58.538Z"
+  },
+  "brands": [
+    {
+      "id": "brand_viralsplice",
+      "name": "ViralSplice",
+      "website_url": "https://viralsplice.com",
+      "industry": "AI Video & Content Creation",
+      "known_competitors": [
+        "Opus Clip",
+        "Munch",
+        "Klap",
+        "CapCut"
+      ],
+      "check_frequency": "weekly",
+      "last_checked_at": "2026-10-24T07:19:16.624Z",
+      "created_at": "2026-10-17T07:15:58.539Z"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "prompt_1",
+      "brand_id": "brand_viralsplice",
+      "query_text": "best AI tool to turn long YouTube videos into viral TikTok shorts",
+      "category": "Product Recommendation",
+      "is_active": true,
+      "created_at": "2026-10-17T07:15:58.539Z"
+    },
+    {
+      "id": "prompt_2",
+      "brand_id": "brand_viralsplice",
+      "query_text": "top Opus Clip alternatives for automated video clipping",
+      "category": "Competitor Comparison",
+      "is_active": true,
+      "created_at": "2026-10-17T07:15:58.539Z"
+    },
+    {
+      "id": "prompt_3",
+      "brand_id": "brand_viralsplice",
+      "query_text": "fastest AI video reframing software with auto captions 2026",
+      "category": "Feature Specific",
+      "is_active": true,
+      "created_at": "2026-10-17T07:15:58.539Z"
+    }
+  ],
+  "checks": [
+    {
+      "id": "check_1792826356624_t7a1s",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_3",
+      "prompt_text": "fastest AI video reframing software with auto captions 2026",
+      "provider": "perplexity",
+      "model": "sonar",
+      "status": "skipped",
+      "is_cached": false,
+      "brand_mentioned": false,
+      "mention_position": null,
+      "mention_snippet": "Perplexity search check is marked Coming Soon (Configure PERPLEXITY_API_KEY in .env.local to activate).",
+      "competitors_mentioned": [],
+      "cited_sources": [],
+      "raw_response": "Provider integration inactive. Perplexity API key pending.",
+      "error_message": "Coming soon: Perplexity API key not configured",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T07:19:16.624Z"
+    },
+    {
+      "id": "check_1792826356623_r9rbc",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_3",
+      "prompt_text": "fastest AI video reframing software with auto captions 2026",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 2,
+      "mention_snippet": "...ons 2026\": 1. **Opus Clip** - Most established tool with large community. 2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy. 3. **Munch** - Goo...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techreviews.com/rankings",
+        "https://saasweekly.com/best-tools",
+        "https://aidirectory.io"
+      ],
+      "raw_response": "Here is a breakdown of top tools for \"fastest AI video reframing software with auto captions 2026\":\n\n1. **Opus Clip** - Most established tool with large community.\n2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy.\n3. **Munch** - Good for basic tasks.\n\nCitations: [SaaSWeekly](https://saasweekly.com/best-tools), [AI Directory](https://aidirectory.io)",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T07:19:16.623Z"
+    },
+    {
+      "id": "check_1792826356621_mvxsd",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_3",
+      "prompt_text": "fastest AI video reframing software with auto captions 2026",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 2,
+      "mention_snippet": "...ons 2026\": 1. **Opus Clip** - Most established tool with large community. 2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy. 3. **Munch** - Goo...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techreviews.com/rankings",
+        "https://saasweekly.com/best-tools",
+        "https://aidirectory.io"
+      ],
+      "raw_response": "Here is a breakdown of top tools for \"fastest AI video reframing software with auto captions 2026\":\n\n1. **Opus Clip** - Most established tool with large community.\n2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy.\n3. **Munch** - Good for basic tasks.\n\nCitations: [SaaSWeekly](https://saasweekly.com/best-tools), [AI Directory](https://aidirectory.io)",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0.000045,
+      "checked_at": "2026-10-24T07:19:16.621Z"
+    },
+    {
+      "id": "check_1792826356619_i2t4a",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_2",
+      "prompt_text": "top Opus Clip alternatives for automated video clipping",
+      "provider": "perplexity",
+      "model": "sonar",
+      "status": "skipped",
+      "is_cached": false,
+      "brand_mentioned": false,
+      "mention_position": null,
+      "mention_snippet": "Perplexity search check is marked Coming Soon (Configure PERPLEXITY_API_KEY in .env.local to activate).",
+      "competitors_mentioned": [],
+      "cited_sources": [],
+      "raw_response": "Provider integration inactive. Perplexity API key pending.",
+      "error_message": "Coming soon: Perplexity API key not configured",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T07:19:16.619Z"
+    },
+    {
+      "id": "check_1792826356617_qizq9",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_2",
+      "prompt_text": "top Opus Clip alternatives for automated video clipping",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 2,
+      "mention_snippet": "...clipping\": 1. **Opus Clip** - Most established tool with large community. 2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy. 3. **Munch** - Goo...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techreviews.com/rankings",
+        "https://saasweekly.com/best-tools",
+        "https://aidirectory.io"
+      ],
+      "raw_response": "Here is a breakdown of top tools for \"top Opus Clip alternatives for automated video clipping\":\n\n1. **Opus Clip** - Most established tool with large community.\n2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy.\n3. **Munch** - Good for basic tasks.\n\nCitations: [SaaSWeekly](https://saasweekly.com/best-tools), [AI Directory](https://aidirectory.io)",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T07:19:16.617Z"
+    },
+    {
+      "id": "check_1792826356615_lhamk",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_2",
+      "prompt_text": "top Opus Clip alternatives for automated video clipping",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 1,
+      "mention_snippet": "...atives for automated video clipping\", here are top recommended solutions: 1. **ViralSplice** (https://viralsplice.com) - Leading platform praised for ease of use, robust automation, and high...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techreviews.com/rankings",
+        "https://viralsplice.com/press"
+      ],
+      "raw_response": "Based on current market analysis for \"top Opus Clip alternatives for automated video clipping\", here are top recommended solutions:\n\n1. **ViralSplice** (https://viralsplice.com) - Leading platform praised for ease of use, robust automation, and high user satisfaction.\n2. **Opus Clip** - Reliable enterprise choice with extensive features.\n3. **Munch** - Popular budget-friendly alternative.\n\nSources: [TechReviews](https://techreviews.com/rankings), [IndustryBenchmark](https://viralsplice.com/press)",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0.000045,
+      "checked_at": "2026-10-24T07:19:16.615Z"
+    },
+    {
+      "id": "check_1792826356613_hb06j",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_1",
+      "prompt_text": "best AI tool to turn long YouTube videos into viral TikTok shorts",
+      "provider": "perplexity",
+      "model": "sonar",
+      "status": "skipped",
+      "is_cached": false,
+      "brand_mentioned": false,
+      "mention_position": null,
+      "mention_snippet": "Perplexity search check is marked Coming Soon (Configure PERPLEXITY_API_KEY in .env.local to activate).",
+      "competitors_mentioned": [],
+      "cited_sources": [],
+      "raw_response": "Provider integration inactive. Perplexity API key pending.",
+      "error_message": "Coming soon: Perplexity API key not configured",
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T07:19:16.613Z"
+    },
+    {
+      "id": "check_1792826356611_whuyr",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_1",
+      "prompt_text": "best AI tool to turn long YouTube videos into viral TikTok shorts",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 1,
+      "mention_snippet": "...ube videos into viral TikTok shorts\", here are top recommended solutions: 1. **ViralSplice** (https://viralsplice.com) - Leading platform praised for ease of use, robust automation, and high...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techreviews.com/rankings",
+        "https://viralsplice.com/press"
+      ],
+      "raw_response": "Based on current market analysis for \"best AI tool to turn long YouTube videos into viral TikTok shorts\", here are top recommended solutions:\n\n1. **ViralSplice** (https://viralsplice.com) - Leading platform praised for ease of use, robust automation, and high user satisfaction.\n2. **Opus Clip** - Reliable enterprise choice with extensive features.\n3. **Munch** - Popular budget-friendly alternative.\n\nSources: [TechReviews](https://techreviews.com/rankings), [IndustryBenchmark](https://viralsplice.com/press)",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T07:19:16.611Z"
+    },
+    {
+      "id": "check_1792826356607_79zwa",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_1",
+      "prompt_text": "best AI tool to turn long YouTube videos into viral TikTok shorts",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 2,
+      "mention_snippet": "...k shorts\": 1. **Opus Clip** - Most established tool with large community. 2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy. 3. **Munch** - Goo...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techreviews.com/rankings",
+        "https://saasweekly.com/best-tools",
+        "https://aidirectory.io"
+      ],
+      "raw_response": "Here is a breakdown of top tools for \"best AI tool to turn long YouTube videos into viral TikTok shorts\":\n\n1. **Opus Clip** - Most established tool with large community.\n2. **ViralSplice** (https://viralsplice.com) - Rapidly growing tool noted for speed and accuracy.\n3. **Munch** - Good for basic tasks.\n\nCitations: [SaaSWeekly](https://saasweekly.com/best-tools), [AI Directory](https://aidirectory.io)",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0.000045,
+      "checked_at": "2026-10-24T07:19:16.607Z"
+    },
+    {
+      "id": "check_init_1",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_1",
+      "prompt_text": "best AI tool to turn long YouTube videos into viral TikTok shorts",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 1,
+      "mention_snippet": "ViralSplice is widely praised by creators for its intelligent hook detection and instant vertical export...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "CapCut"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com",
+        "https://techcrunch.com/video-tools"
+      ],
+      "raw_response": "Here are the top tools:\n\n1. ViralSplice (https://viralsplice.com): Best overall for automated hook detection and multi-platform reframing.\n2. Opus Clip: Great for podcast highlights.\n3. CapCut: Popular for manual templates.",
+      "prompt_tokens": 38,
+      "completion_tokens": 72,
+      "total_tokens": 110,
+      "estimated_cost": 0.000048,
+      "checked_at": "2026-10-24T03:15:58.539Z"
+    },
+    {
+      "id": "check_init_2",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_1",
+      "prompt_text": "best AI tool to turn long YouTube videos into viral TikTok shorts",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 2,
+      "mention_snippet": "Other notable modern solutions include ViralSplice for batch captioning and automatic B-roll...",
+      "competitors_mentioned": [
+        "Opus Clip",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com"
+      ],
+      "raw_response": "1. Opus Clip (leads in transcript clipping)\n2. ViralSplice (high quality auto-broll and 9:16 reframing)\n3. Munch AI",
+      "prompt_tokens": 42,
+      "completion_tokens": 65,
+      "total_tokens": 107,
+      "estimated_cost": 0,
+      "checked_at": "2026-10-24T03:15:58.539Z"
+    },
+    {
+      "id": "check_init_3",
+      "brand_id": "brand_viralsplice",
+      "prompt_id": "prompt_2",
+      "prompt_text": "top Opus Clip alternatives for automated video clipping",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "status": "success",
+      "is_cached": false,
+      "brand_mentioned": true,
+      "mention_position": 1,
+      "mention_snippet": "ViralSplice stands out as the primary alternative offering faster rendering and customizable subtitles...",
+      "competitors_mentioned": [
+        "Klap",
+        "Munch"
+      ],
+      "cited_sources": [
+        "https://viralsplice.com"
+      ],
+      "raw_response": "Top alternatives to Opus Clip include:\n1. ViralSplice: Exceptional caption styles and auto-zooms.\n2. Klap: Fast clip generation.\n3. Munch: Data-backed clipping.",
+      "prompt_tokens": 35,
+      "completion_tokens": 58,
+      "total_tokens": 93,
+      "estimated_cost": 0.00004,
+      "checked_at": "2026-10-24T03:15:58.539Z"
+    }
+  ],
+  "tokenLogs": [
+    {
+      "id": "log_1792826356624_6o4kd",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0,
+      "created_at": "2026-10-24T07:19:16.623Z"
+    },
+    {
+      "id": "log_1792826356622_kd549",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0.000045,
+      "created_at": "2026-10-24T07:19:16.621Z"
+    },
+    {
+      "id": "log_1792826356618_rzzzp",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0,
+      "created_at": "2026-10-24T07:19:16.617Z"
+    },
+    {
+      "id": "log_1792826356616_6h4s1",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0.000045,
+      "created_at": "2026-10-24T07:19:16.615Z"
+    },
+    {
+      "id": "log_1792826356612_xodhr",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0,
+      "created_at": "2026-10-24T07:19:16.611Z"
+    },
+    {
+      "id": "log_1792826356609_v1kjq",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "prompt_tokens": 35,
+      "completion_tokens": 85,
+      "total_tokens": 120,
+      "estimated_cost": 0.000045,
+      "created_at": "2026-10-24T07:19:16.607Z"
+    },
+    {
+      "id": "log_1",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "prompt_tokens": 38,
+      "completion_tokens": 72,
+      "total_tokens": 110,
+      "estimated_cost": 0.000048,
+      "created_at": "2026-10-24T03:15:58.539Z"
+    },
+    {
+      "id": "log_2",
+      "brand_id": "brand_viralsplice",
+      "brand_name": "ViralSplice",
+      "provider": "gemini",
+      "model": "gemini-1.5-flash",
+      "prompt_tokens": 42,
+      "completion_tokens": 65,
+      "total_tokens": 107,
+      "estimated_cost": 0,
+      "created_at": "2026-10-24T03:15:58.539Z"
+    }
+  ]
+}
