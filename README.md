@@ -140,7 +140,18 @@ To configure the freemium tiers with single-device license activations:
 4. Copy the checkout URLs into:
    - `NEXT_PUBLIC_LEMON_PRO_CHECKOUT_URL`
    - `NEXT_PUBLIC_LEMON_AGENCY_CHECKOUT_URL`
-5. Test license key activation in the app using the **Activate Key** modal.
+5. **Configure Webhook for Automatic Plan Upgrades**:
+   - In Lemon Squeezy Dashboard, go to **Settings** &rarr; **Webhooks**.
+   - Click **Add Webhook**.
+   - Set **Callback URL** to: `https://brandsight-ai.vercel.app/api/webhooks/lemonsqueezy`
+   - Enter a **Signing Secret** and select events:
+     - `order_created`
+     - `subscription_created`
+     - `subscription_updated`
+     - `subscription_cancelled`
+     - `subscription_expired`
+   - Copy the signing secret into `LEMONSQUEEZY_WEBHOOK_SECRET` in your Vercel project environment variables.
+6. Test license key activation in the app using the **Activate Key** modal or via test webhook.
 
 ---
 
