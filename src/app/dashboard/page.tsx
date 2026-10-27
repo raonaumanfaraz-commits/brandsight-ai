@@ -61,17 +61,19 @@ export default function DashboardPage() {
   const [unlinkedKey, setUnlinkedKey] = useState<string | null>(null);
   const [linkingKey, setLinkingKey] = useState(false);
 
+  const activeTier = authProfile?.plan_tier || profile?.plan_tier || 'free';
+  const userId = user?.id || null;
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedKey = localStorage.getItem('brandsight_license_key');
-      const activeTier = authProfile?.plan_tier || profile?.plan_tier || 'free';
-      if (storedKey && user && activeTier === 'free') {
+      if (storedKey && userId && activeTier === 'free') {
         setUnlinkedKey(storedKey);
       } else {
         setUnlinkedKey(null);
       }
     }
-  }, [user, authProfile, profile]);
+  }, [userId, activeTier]);
 
   const handleLinkDetectedKey = async () => {
     if (!unlinkedKey) return;
@@ -86,10 +88,10 @@ export default function DashboardPage() {
     }
   };
 
-  // Fetch initial profile & brands
-  const loadBrandsAndProfile = async () => {
+  // Fetch initial profile & brands with abort signal and optional retry backoff
+  const loadBrandsAndProfile = React.useCallback(async (signal?: AbortSignal, retryCount = 0) => {
     try {
-      const res = await authFetch('/api/brands');
+      const res = await authFetch('/api/brands', { signal });
       const data = await res.json();
       if (res.ok) {
         const brandList: Brand[] = data.brands || [];
@@ -107,40 +109,84 @@ export default function DashboardPage() {
           setChecks([]);
           setStats(null);
         }
+      } else if (retryCount < 2 && !signal?.aborted) {
+        // Exponential backoff retry on server errors
+        const backoffMs = Math.pow(2, retryCount) * 1500;
+        setTimeout(() => {
+          if (!signal?.aborted) loadBrandsAndProfile(signal, retryCount + 1);
+        }, backoffMs);
       }
-    } catch (err) {
-      console.error('Error loading initial data:', err);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') return;
+      console.warn('Notice loading initial data:', err);
+      if (retryCount < 2 && !signal?.aborted) {
+        const backoffMs = Math.pow(2, retryCount) * 1500;
+        setTimeout(() => {
+          if (!signal?.aborted) loadBrandsAndProfile(signal, retryCount + 1);
+        }, backoffMs);
+      }
     }
-  };
+  }, [authFetch, authProfile]);
 
   // Fetch brand specific data (prompts, checks, stats)
-  const loadBrandDetails = async (brandId: string) => {
+  const loadBrandDetails = React.useCallback(async (brandId: string, signal?: AbortSignal, retryCount = 0) => {
     if (!brandId) return;
     setLoading(true);
     try {
-      const res = await authFetch(`/api/brands/${brandId}`);
+      const res = await authFetch(`/api/brands/${brandId}`, { signal });
       const data = await res.json();
       if (res.ok) {
         setPrompts(data.prompts || []);
         setChecks(data.checks || []);
         setStats(data.stats || null);
+      } else if (retryCount < 2 && !signal?.aborted) {
+        const backoffMs = Math.pow(2, retryCount) * 1500;
+        setTimeout(() => {
+          if (!signal?.aborted) loadBrandDetails(brandId, signal, retryCount + 1);
+        }, backoffMs);
       }
-    } catch (err) {
-      console.error('Error fetching brand details:', err);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') return;
+      console.warn('Notice fetching brand details:', err);
+      if (retryCount < 2 && !signal?.aborted) {
+        const backoffMs = Math.pow(2, retryCount) * 1500;
+        setTimeout(() => {
+          if (!signal?.aborted) loadBrandDetails(brandId, signal, retryCount + 1);
+        }, backoffMs);
+      }
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
     }
-  };
+  }, [authFetch]);
 
+  // Initial mount fetch and 30s polling with cleanup and abort controller
   useEffect(() => {
-    loadBrandsAndProfile();
-  }, [user]);
+    const controller = new AbortController();
+    loadBrandsAndProfile(controller.signal);
 
+    // Sane polling interval: 30s
+    const intervalId = setInterval(() => {
+      loadBrandsAndProfile(controller.signal);
+    }, 30000);
+
+    return () => {
+      controller.abort();
+      clearInterval(intervalId);
+    };
+  }, [userId, loadBrandsAndProfile]);
+
+  // Brand selection effect with abort controller
   useEffect(() => {
-    if (selectedBrandId) {
-      loadBrandDetails(selectedBrandId);
-    }
-  }, [selectedBrandId]);
+    if (!selectedBrandId) return;
+    const controller = new AbortController();
+    loadBrandDetails(selectedBrandId, controller.signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, [selectedBrandId, loadBrandDetails]);
 
   const selectedBrand = brands.find((b) => b.id === selectedBrandId) || brands[0];
 

@@ -59,10 +59,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAuthModalPrompt(null);
   }, []);
 
+  // Store latest session token in a ref to avoid callback churn
+  const sessionTokenRef = React.useRef<string | undefined>(session?.access_token);
+  React.useEffect(() => {
+    sessionTokenRef.current = session?.access_token;
+  }, [session?.access_token]);
+
   // Fetch or refresh user profile from backend
   const refreshProfile = useCallback(async (token?: string) => {
     try {
-      const activeToken = token || session?.access_token;
+      const activeToken = token || sessionTokenRef.current;
       const headers: Record<string, string> = {};
       if (activeToken) {
         headers['Authorization'] = `Bearer ${activeToken}`;
@@ -78,11 +84,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       console.warn('[BrandSight Auth] Profile fetch notice:', err);
     }
-  }, [session]);
+  }, []);
 
   // Authenticated fetch wrapper injecting Bearer token automatically
   const authFetch = useCallback(async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
-    const token = session?.access_token;
+    const token = sessionTokenRef.current;
     const reqHeaders = new Headers(init?.headers || {});
 
     if (token && !reqHeaders.has('Authorization')) {
@@ -93,7 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ...init,
       headers: reqHeaders,
     });
-  }, [session]);
+  }, []);
 
   // Initial startup probe & Supabase Auth listener
   useEffect(() => {
