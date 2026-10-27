@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Key, X, CheckCircle2, AlertCircle, Sparkles, ShieldCheck } from 'lucide-react';
+import { Key, X, CheckCircle2, AlertCircle, Sparkles, ShieldCheck, User } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 interface LicenseModalProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface LicenseModalProps {
 }
 
 export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) {
+  const { user, authFetch, refreshProfile } = useAuth();
   const [licenseKey, setLicenseKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
     setError(null);
 
     try {
-      const res = await fetch('/api/license/activate', {
+      const res = await authFetch('/api/license/activate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ license_key: key }),
@@ -38,6 +40,17 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
       }
 
       setSuccessTier(data.tier);
+      await refreshProfile();
+
+      // Remember key in localStorage for linking if guest
+      if (!user) {
+        try {
+          localStorage.setItem('brandsight_license_key', key);
+        } catch {
+          // ignore
+        }
+      }
+
       if (onSuccess) onSuccess();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Activation error';
@@ -48,27 +61,32 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(4, 13, 24, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100,
-      padding: '20px',
-    }}>
-      <div className="glass-panel" style={{
-        maxWidth: '480px',
-        width: '100%',
-        padding: '28px',
-        position: 'relative',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
-      }}>
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(4, 13, 24, 0.85)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100,
+        padding: '20px',
+      }}
+    >
+      <div
+        className="glass-panel"
+        style={{
+          maxWidth: '480px',
+          width: '100%',
+          padding: '28px',
+          position: 'relative',
+          boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
+        }}
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -79,6 +97,8 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
             background: 'transparent',
             color: 'var(--text-muted)',
             padding: '4px',
+            border: 'none',
+            cursor: 'pointer',
           }}
         >
           <X size={20} />
@@ -86,70 +106,118 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
 
         {/* Modal Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '10px',
-            background: 'rgba(201, 164, 92, 0.15)',
-            border: '1px solid rgba(201, 164, 92, 0.35)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--gold-primary)',
-          }}>
+          <div
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '10px',
+              background: 'rgba(201, 164, 92, 0.15)',
+              border: '1px solid rgba(201, 164, 92, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--gold-primary)',
+            }}
+          >
             <Key size={22} />
           </div>
           <div>
             <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
-              Activate Lemon Squeezy License
+              {user ? 'Link License to Account' : 'Activate Lemon Squeezy License'}
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-              1 activation per license (ViralSplice protocol)
+              {user ? `Will link to ${user.email}` : 'Enables Pro/Agency on your device'}
             </p>
           </div>
         </div>
 
-        {successTier ? (
-          <div style={{ textAlign: 'center', padding: '24px 0' }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '50%',
-              background: 'rgba(16, 185, 129, 0.15)',
-              border: '2px solid #10B981',
+        {/* User Account Notice */}
+        {user && (
+          <div
+            style={{
+              background: 'rgba(201, 164, 92, 0.1)',
+              border: '1px solid rgba(201, 164, 92, 0.25)',
+              borderRadius: '8px',
+              padding: '10px 14px',
+              marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px',
-              color: '#10B981',
-            }}>
+              gap: '10px',
+              fontSize: '12.5px',
+              color: 'var(--gold-light)',
+            }}
+          >
+            <ShieldCheck size={16} style={{ flexShrink: 0, color: 'var(--gold-primary)' }} />
+            <span>
+              This license key will be tied to <strong>{user.email}</strong>, so your plan stays active
+              across all your devices without re-entering the key.
+            </span>
+          </div>
+        )}
+
+        {successTier ? (
+          <div style={{ textAlign: 'center', padding: '24px 0' }}>
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                background: 'rgba(16, 185, 129, 0.15)',
+                border: '2px solid #10B981',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px',
+                color: '#10B981',
+              }}
+            >
               <CheckCircle2 size={32} />
             </div>
             <h4 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF', marginBottom: '8px' }}>
               License Successfully Activated!
             </h4>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '20px' }}>
-              Your account is now unlocked with full <strong style={{ color: 'var(--gold-primary)' }}>{successTier.toUpperCase()}</strong> privileges.
+              Your account now has full{' '}
+              <strong style={{ color: 'var(--gold-primary)' }}>{successTier.toUpperCase()}</strong>{' '}
+              privileges unlocked.
             </p>
             <button
               onClick={() => {
                 onClose();
-                window.location.href = '/dashboard';
+                if (typeof window !== 'undefined' && window.location.pathname !== '/dashboard') {
+                  window.location.href = '/dashboard';
+                }
               }}
               className="btn-gold"
               style={{ width: '100%' }}
             >
-              Go to Dashboard
+              Continue to Dashboard
             </button>
           </div>
         ) : (
           <>
-            <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', marginBottom: '18px', lineHeight: 1.5 }}>
-              Paste the license key received in your Lemon Squeezy order email to upgrade your brand tracking limits and enable daily checks.
+            <p
+              style={{
+                fontSize: '13.5px',
+                color: 'var(--text-muted)',
+                marginBottom: '18px',
+                lineHeight: 1.5,
+              }}
+            >
+              Paste the license key received in your Lemon Squeezy order email to unlock higher brand
+              tracking limits and daily automated AI scans.
             </p>
 
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'var(--text-muted)',
+                  marginBottom: '6px',
+                }}
+              >
                 LICENSE KEY
               </label>
               <div style={{ position: 'relative' }}>
@@ -173,18 +241,20 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
             </div>
 
             {error && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.3)',
-                padding: '10px 12px',
-                borderRadius: '6px',
-                color: '#F87171',
-                fontSize: '13px',
-                marginBottom: '16px',
-              }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  padding: '10px 12px',
+                  borderRadius: '6px',
+                  color: '#F87171',
+                  fontSize: '13px',
+                  marginBottom: '16px',
+                }}
+              >
                 <AlertCircle size={16} />
                 <span>{error}</span>
               </div>
@@ -196,27 +266,31 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
               className="btn-gold"
               style={{ width: '100%', opacity: loading ? 0.7 : 1, marginBottom: '20px' }}
             >
-              {loading ? 'Validating via Lemon Squeezy...' : 'Activate License'}
+              {loading ? 'Validating via Lemon Squeezy...' : user ? 'Link Key to My Account' : 'Activate License'}
             </button>
 
-            {/* Offline QA quick test keys */}
-            <div style={{
-              borderTop: '1px solid var(--border-subtle)',
-              paddingTop: '16px',
-              marginTop: '8px',
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '11px',
-                fontWeight: 700,
-                color: 'var(--gold-primary)',
-                textTransform: 'uppercase',
-                marginBottom: '8px',
-              }}>
+            {/* Development / Demo Quick Test Keys */}
+            <div
+              style={{
+                borderTop: '1px solid var(--border-subtle)',
+                paddingTop: '16px',
+                marginTop: '8px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: 'var(--gold-primary)',
+                  textTransform: 'uppercase',
+                  marginBottom: '8px',
+                }}
+              >
                 <Sparkles size={12} />
-                <span>Local Development / Demo Test Keys</span>
+                <span>Demo / Test License Keys</span>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button

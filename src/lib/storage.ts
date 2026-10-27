@@ -322,7 +322,7 @@ async function seedDemoDataIfEmpty(supabase: SupabaseClient): Promise<Brand | nu
 // ----------------------------------------------------------------------
 // Profile Operations
 // ----------------------------------------------------------------------
-export async function getProfile(): Promise<UserProfile> {
+export async function getProfile(userId?: string): Promise<UserProfile> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -331,6 +331,67 @@ export async function getProfile(): Promise<UserProfile> {
     return localGetProfile();
   }
 
+  // If specific userId is requested
+  if (userId && isValidUuid(userId)) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (error) {
+      throw new Error(`Failed to fetch user profile from Supabase: ${error.message}`);
+    }
+
+    if (data) {
+      return mapProfileRow(data);
+    }
+
+    // Check if user has an active license in licenses table (e.g. bought before signing up)
+    let initialTier: PlanTier = 'free';
+    let licenseKey: string | undefined;
+
+    const { data: licenseData } = await supabase
+      .from('licenses')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .maybeSingle();
+
+    if (licenseData) {
+      initialTier = (licenseData.plan_tier || 'free') as PlanTier;
+      licenseKey = licenseData.license_key;
+    }
+
+    const limits = PLAN_LIMITS[initialTier];
+    const newProfile = {
+      id: userId,
+      email: `${userId.substring(0, 8)}@brandsight.ai`,
+      plan_tier: initialTier,
+      license_key: licenseKey,
+      brands_limit: limits.brandsLimit,
+      prompts_limit: limits.promptsLimit,
+      check_frequency: limits.frequency,
+      white_label_enabled: limits.whiteLabel,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data: created, error: insertError } = await supabase
+      .from('profiles')
+      .upsert(newProfile, { onConflict: 'id' })
+      .select()
+      .single();
+
+    if (insertError) {
+      console.warn(`[BrandSight Storage] Profile auto-creation notice: ${insertError.message}`);
+      return mapProfileRow(newProfile);
+    }
+
+    return mapProfileRow(created);
+  }
+
+  // Fallback / guest profile query (single-tenant or public preview)
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -371,7 +432,10 @@ export async function getProfile(): Promise<UserProfile> {
   return mapProfileRow(created);
 }
 
-export async function updateProfile(partial: Partial<UserProfile>): Promise<UserProfile> {
+export async function updateProfile(
+  partial: Partial<UserProfile>,
+  userId?: string
+): Promise<UserProfile> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -380,7 +444,9 @@ export async function updateProfile(partial: Partial<UserProfile>): Promise<User
     return localUpdateProfile(partial);
   }
 
-  const profile = await getProfile();
+  const profile = await getProfile(userId);
+  const targetId = userId && isValidUuid(userId) ? userId : profile.id;
+
   const updatePayload: Record<string, any> = {
     updated_at: new Date().toISOString(),
   };
@@ -397,7 +463,7 @@ export async function updateProfile(partial: Partial<UserProfile>): Promise<User
   const { data, error } = await supabase
     .from('profiles')
     .update(updatePayload)
-    .eq('id', profile.id)
+    .eq('id', targetId)
     .select()
     .single();
 
@@ -408,38 +474,93 @@ export async function updateProfile(partial: Partial<UserProfile>): Promise<User
   return mapProfileRow(data);
 }
 
-export async function upgradePlan(tier: PlanTier, licenseKey?: string): Promise<UserProfile> {
+export async function upgradePlan(
+  tier: PlanTier,
+  licenseKey?: string,
+  userId?: string,
+  userEmail?: string
+): Promise<UserProfile> {
   const limits = PLAN_LIMITS[tier];
-  const updated = await updateProfile({
-    plan_tier: tier,
-    license_key: licenseKey,
-    brands_limit: limits.brandsLimit,
-    prompts_limit: limits.promptsLimit,
-    check_frequency: limits.frequency,
-    white_label_enabled: limits.whiteLabel,
-  });
+  const updated = await updateProfile(
+    {
+      plan_tier: tier,
+      license_key: licenseKey,
+      brands_limit: limits.brandsLimit,
+      prompts_limit: limits.promptsLimit,
+      check_frequency: limits.frequency,
+      white_label_enabled: limits.whiteLabel,
+    },
+    userId
+  );
 
   const supabase = getSupabaseAdmin();
   if (supabase && licenseKey) {
-    await supabase.from('licenses').upsert(
-      {
-        license_key: licenseKey,
-        user_email: updated.email,
-        plan_tier: tier,
-        status: 'active',
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'license_key' }
-    );
+    const licensePayload: Record<string, any> = {
+      license_key: licenseKey,
+      user_email: userEmail || updated.email,
+      plan_tier: tier,
+      status: 'active',
+      updated_at: new Date().toISOString(),
+    };
+    if (userId && isValidUuid(userId)) {
+      licensePayload.user_id = userId;
+    }
+
+    await supabase.from('licenses').upsert(licensePayload, { onConflict: 'license_key' });
   }
 
   return updated;
 }
 
+/**
+ * Links a previously active or newly entered license key directly to a user's account
+ */
+export async function linkLicenseToUser(
+  licenseKey: string,
+  userId: string,
+  userEmail?: string
+): Promise<{ success: boolean; profile: UserProfile; tier: PlanTier }> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    const profile = await localGetProfile();
+    return { success: true, profile, tier: 'pro' };
+  }
+
+  const cleanKey = licenseKey.trim();
+
+  // Check if key exists in licenses table
+  const { data: licenseRow } = await supabase
+    .from('licenses')
+    .select('*')
+    .eq('license_key', cleanKey)
+    .maybeSingle();
+
+  let tier: PlanTier = 'pro';
+  if (licenseRow && licenseRow.plan_tier) {
+    tier = licenseRow.plan_tier as PlanTier;
+  }
+
+  // Update profile for user
+  const updatedProfile = await upgradePlan(tier, cleanKey, userId, userEmail);
+
+  // Link user_id in licenses table
+  await supabase
+    .from('licenses')
+    .update({
+      user_id: userId,
+      user_email: userEmail || updatedProfile.email,
+      status: 'active',
+      updated_at: new Date().toISOString(),
+    })
+    .eq('license_key', cleanKey);
+
+  return { success: true, profile: updatedProfile, tier };
+}
+
 // ----------------------------------------------------------------------
 // Brands Operations
 // ----------------------------------------------------------------------
-export async function getBrands(): Promise<Brand[]> {
+export async function getBrands(userId?: string): Promise<Brand[]> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -448,41 +569,41 @@ export async function getBrands(): Promise<Brand[]> {
     return localGetBrands();
   }
 
-  const { data: brandsData, error } = await supabase
+  // If authenticated user requested, fetch ONLY their brands
+  if (userId && isValidUuid(userId)) {
+    const { data: userBrands, error } = await supabase
+      .from('brands')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new Error(`Failed to fetch user brands from Supabase: ${error.message}`);
+    }
+
+    return (userBrands || []).map(mapBrandRow);
+  }
+
+  // Guest / Demo mode: fetch demo brand (where user_id is null)
+  const { data: demoBrands, error: demoErr } = await supabase
     .from('brands')
     .select('*')
+    .is('user_id', null)
     .order('created_at', { ascending: false });
 
-  if (error) {
-    throw new Error(`Failed to fetch brands from Supabase: ${error.message}`);
+  if (!demoErr && demoBrands && demoBrands.length > 0) {
+    return demoBrands.map(mapBrandRow);
   }
 
-  // If brands exist, return real user data
-  if (brandsData && brandsData.length > 0) {
-    return brandsData.map(mapBrandRow);
-  }
+  // If no demo brands exist with user_id NULL, check if any brand exists
+  const { data: allBrands } = await supabase
+    .from('brands')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(1);
 
-  // Only if brands table is completely empty, check if any checks exist
-  const { count: checksCount, error: countErr } = await supabase
-    .from('checks')
-    .select('*', { count: 'exact', head: true });
-
-  if (countErr) {
-    throw new Error(`Failed to inspect checks count in Supabase: ${countErr.message}`);
-  }
-
-  // If checks exist or real user data exists, do not seed demo brand
-  if (checksCount && checksCount > 0) {
-    return [];
-  }
-
-  // Check prompts count
-  const { count: promptsCount } = await supabase
-    .from('prompts')
-    .select('*', { count: 'exact', head: true });
-
-  if (promptsCount && promptsCount > 0) {
-    return [];
+  if (allBrands && allBrands.length > 0) {
+    return allBrands.map(mapBrandRow);
   }
 
   // Supabase is completely empty: seed the demo brand once
@@ -490,7 +611,7 @@ export async function getBrands(): Promise<Brand[]> {
   return seeded ? [seeded] : [];
 }
 
-export async function getBrandById(brandId: string): Promise<Brand | null> {
+export async function getBrandById(brandId: string, userId?: string): Promise<Brand | null> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -513,10 +634,27 @@ export async function getBrandById(brandId: string): Promise<Brand | null> {
     throw new Error(`Failed to fetch brand from Supabase: ${error.message}`);
   }
 
-  return data ? mapBrandRow(data) : null;
+  if (!data) return null;
+
+  const brand = mapBrandRow(data);
+
+  // If brand has an owner, verify ownership if userId is supplied
+  if (brand.user_id) {
+    if (userId && brand.user_id === userId) {
+      return brand;
+    }
+    // Brand belongs to someone else
+    return null;
+  }
+
+  // Brand is a public demo brand (user_id is null/empty)
+  return brand;
 }
 
-export async function createBrand(brandData: Omit<Brand, 'id' | 'created_at'>): Promise<Brand> {
+export async function createBrand(
+  brandData: Omit<Brand, 'id' | 'created_at'>,
+  userId?: string
+): Promise<Brand> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -525,10 +663,14 @@ export async function createBrand(brandData: Omit<Brand, 'id' | 'created_at'>): 
     return localCreateBrand(brandData);
   }
 
-  const profile = await getProfile();
-  const brands = await getBrands();
+  if (!userId || !isValidUuid(userId)) {
+    throw new Error('Authentication required: Please log in to create and track your brand.');
+  }
 
-  if (brands.length >= profile.brands_limit) {
+  const profile = await getProfile(userId);
+  const userBrands = await getBrands(userId);
+
+  if (userBrands.length >= profile.brands_limit) {
     throw new Error(
       `Plan limit reached: You can track up to ${profile.brands_limit} brand(s) on the ${profile.plan_tier.toUpperCase()} plan. Upgrade to add more.`
     );
@@ -540,7 +682,7 @@ export async function createBrand(brandData: Omit<Brand, 'id' | 'created_at'>): 
 
   const insertPayload = {
     id: newBrandId,
-    user_id: profile.id,
+    user_id: userId,
     name: brandData.name,
     website_url: brandData.website_url,
     industry: brandData.industry || 'Technology',
@@ -564,7 +706,11 @@ export async function createBrand(brandData: Omit<Brand, 'id' | 'created_at'>): 
   return mapBrandRow(data);
 }
 
-export async function updateBrand(brandId: string, partial: Partial<Brand>): Promise<Brand> {
+export async function updateBrand(
+  brandId: string,
+  partial: Partial<Brand>,
+  userId?: string
+): Promise<Brand> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -577,7 +723,15 @@ export async function updateBrand(brandId: string, partial: Partial<Brand>): Pro
     throw new Error('Invalid brand ID');
   }
 
-  const profile = await getProfile();
+  // Verify ownership
+  if (userId) {
+    const existing = await getBrandById(brandId, userId);
+    if (!existing) {
+      throw new Error('Brand not found or access denied.');
+    }
+  }
+
+  const profile = await getProfile(userId);
   if (profile.plan_tier === 'free' && partial.check_frequency === 'daily') {
     throw new Error('Daily checks are available on Pro and Agency plans only.');
   }
@@ -607,7 +761,7 @@ export async function updateBrand(brandId: string, partial: Partial<Brand>): Pro
   return mapBrandRow(data);
 }
 
-export async function deleteBrand(brandId: string): Promise<void> {
+export async function deleteBrand(brandId: string, userId?: string): Promise<void> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -618,6 +772,13 @@ export async function deleteBrand(brandId: string): Promise<void> {
 
   if (!isValidUuid(brandId)) {
     throw new Error('Invalid brand ID');
+  }
+
+  if (userId) {
+    const existing = await getBrandById(brandId, userId);
+    if (!existing) {
+      throw new Error('Brand not found or access denied.');
+    }
   }
 
   const { error } = await supabase
@@ -633,7 +794,7 @@ export async function deleteBrand(brandId: string): Promise<void> {
 // ----------------------------------------------------------------------
 // Prompts Operations
 // ----------------------------------------------------------------------
-export async function getPrompts(brandId?: string): Promise<PromptItem[]> {
+export async function getPrompts(brandId?: string, userId?: string): Promise<PromptItem[]> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -642,10 +803,16 @@ export async function getPrompts(brandId?: string): Promise<PromptItem[]> {
     return localGetPrompts(brandId);
   }
 
+  if (brandId) {
+    if (!isValidUuid(brandId)) return [];
+    // Verify brand access
+    const brand = await getBrandById(brandId, userId);
+    if (!brand) return [];
+  }
+
   let query = supabase.from('prompts').select('*').order('created_at', { ascending: true });
 
   if (brandId) {
-    if (!isValidUuid(brandId)) return [];
     query = query.eq('brand_id', brandId);
   }
 
@@ -657,7 +824,10 @@ export async function getPrompts(brandId?: string): Promise<PromptItem[]> {
   return (data || []).map(mapPromptRow);
 }
 
-export async function createPrompt(promptData: Omit<PromptItem, 'id' | 'created_at'>): Promise<PromptItem> {
+export async function createPrompt(
+  promptData: Omit<PromptItem, 'id' | 'created_at'>,
+  userId?: string
+): Promise<PromptItem> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -666,8 +836,17 @@ export async function createPrompt(promptData: Omit<PromptItem, 'id' | 'created_
     return localCreatePrompt(promptData);
   }
 
-  const profile = await getProfile();
-  const existingForBrand = await getPrompts(promptData.brand_id);
+  if (!userId || !isValidUuid(userId)) {
+    throw new Error('Authentication required: Please log in to add search queries.');
+  }
+
+  const brand = await getBrandById(promptData.brand_id, userId);
+  if (!brand) {
+    throw new Error('Brand not found or access denied.');
+  }
+
+  const profile = await getProfile(userId);
+  const existingForBrand = await getPrompts(promptData.brand_id, userId);
 
   if (existingForBrand.length >= profile.prompts_limit) {
     throw new Error(
@@ -701,7 +880,7 @@ export async function createPrompt(promptData: Omit<PromptItem, 'id' | 'created_
   return mapPromptRow(data);
 }
 
-export async function deletePrompt(promptId: string): Promise<void> {
+export async function deletePrompt(promptId: string, userId?: string): Promise<void> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -712,6 +891,22 @@ export async function deletePrompt(promptId: string): Promise<void> {
 
   if (!isValidUuid(promptId)) {
     throw new Error('Invalid prompt ID');
+  }
+
+  if (userId) {
+    // Verify prompt's brand belongs to user
+    const { data: promptRow } = await supabase
+      .from('prompts')
+      .select('brand_id')
+      .eq('id', promptId)
+      .maybeSingle();
+
+    if (promptRow && promptRow.brand_id) {
+      const brand = await getBrandById(promptRow.brand_id, userId);
+      if (!brand) {
+        throw new Error('Access denied to delete prompt.');
+      }
+    }
   }
 
   const { error } = await supabase
@@ -727,13 +922,19 @@ export async function deletePrompt(promptId: string): Promise<void> {
 // ----------------------------------------------------------------------
 // Checks Operations
 // ----------------------------------------------------------------------
-export async function getChecks(brandId?: string): Promise<CheckResult[]> {
+export async function getChecks(brandId?: string, userId?: string): Promise<CheckResult[]> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
       throw new Error('Supabase client unavailable on Vercel production.');
     }
     return localGetChecks(brandId);
+  }
+
+  if (brandId) {
+    if (!isValidUuid(brandId)) return [];
+    const brand = await getBrandById(brandId, userId);
+    if (!brand) return [];
   }
 
   // Load prompts map for reliable prompt_text lookup
@@ -748,7 +949,6 @@ export async function getChecks(brandId?: string): Promise<CheckResult[]> {
     .order('checked_at', { ascending: false });
 
   if (brandId) {
-    if (!isValidUuid(brandId)) return [];
     query = query.eq('brand_id', brandId);
   }
 
@@ -771,7 +971,7 @@ export async function getChecks(brandId?: string): Promise<CheckResult[]> {
   return (data || []).map((row) => mapCheckRow(row, promptMap.get(row.prompt_id)));
 }
 
-export async function recordCheck(check: CheckResult): Promise<CheckResult> {
+export async function recordCheck(check: CheckResult, userId?: string): Promise<CheckResult> {
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     if (process.env.VERCEL) {
@@ -828,10 +1028,10 @@ export async function recordCheck(check: CheckResult): Promise<CheckResult> {
 
   // Append token log for non-cached checks with tokens
   if (check.total_tokens > 0) {
-    const profile = await getProfile();
+    const profile = await getProfile(userId);
     const tokenLogPayload = {
       id: crypto.randomUUID(),
-      user_id: profile.id,
+      user_id: userId && isValidUuid(userId) ? userId : profile.id,
       brand_id: check.brand_id,
       provider: check.provider,
       model: check.model,

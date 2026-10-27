@@ -9,6 +9,7 @@ import AddPromptModal from '@/components/AddPromptModal';
 import WeeklyReportModal from '@/components/WeeklyReportModal';
 import AdminGuardrailsModal from '@/components/AdminGuardrailsModal';
 import LicenseModal from '@/components/LicenseModal';
+import { useAuth } from '@/context/AuthContext';
 import {
   Building2,
   Plus,
@@ -29,10 +30,14 @@ import {
   Clock,
   Layers,
   ArrowUpRight,
+  ArrowRight,
+  Key,
+  LogIn,
 } from 'lucide-react';
 import { Brand, PromptItem, CheckResult, BrandStats, UserProfile, AIProvider } from '@/types';
 
 export default function DashboardPage() {
+  const { user, profile: authProfile, authFetch, openAuthModal, linkLicenseKey } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedBrandId, setSelectedBrandId] = useState<string>('');
@@ -52,16 +57,55 @@ export default function DashboardPage() {
   const [showGuardrails, setShowGuardrails] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
 
+  // Unlinked Key state (if user has active key in browser but account is on free tier)
+  const [unlinkedKey, setUnlinkedKey] = useState<string | null>(null);
+  const [linkingKey, setLinkingKey] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedKey = localStorage.getItem('brandsight_license_key');
+      const activeTier = authProfile?.plan_tier || profile?.plan_tier || 'free';
+      if (storedKey && user && activeTier === 'free') {
+        setUnlinkedKey(storedKey);
+      } else {
+        setUnlinkedKey(null);
+      }
+    }
+  }, [user, authProfile, profile]);
+
+  const handleLinkDetectedKey = async () => {
+    if (!unlinkedKey) return;
+    setLinkingKey(true);
+    const res = await linkLicenseKey(unlinkedKey);
+    setLinkingKey(false);
+    if (res.success) {
+      setUnlinkedKey(null);
+      await loadBrandsAndProfile();
+    } else {
+      alert(res.error || 'Failed to link license key');
+    }
+  };
+
   // Fetch initial profile & brands
   const loadBrandsAndProfile = async () => {
     try {
-      const res = await fetch('/api/brands');
+      const res = await authFetch('/api/brands');
       const data = await res.json();
       if (res.ok) {
-        setBrands(data.brands || []);
-        setProfile(data.profile || null);
-        if (data.brands && data.brands.length > 0 && !selectedBrandId) {
-          setSelectedBrandId(data.brands[0].id);
+        const brandList: Brand[] = data.brands || [];
+        setBrands(brandList);
+        setProfile(data.profile || authProfile || null);
+
+        if (brandList.length > 0) {
+          // If previous selection is still in list, keep it; otherwise select first
+          setSelectedBrandId((prev) =>
+            brandList.some((b) => b.id === prev) ? prev : brandList[0].id
+          );
+        } else {
+          setSelectedBrandId('');
+          setPrompts([]);
+          setChecks([]);
+          setStats(null);
         }
       }
     } catch (err) {
@@ -74,7 +118,7 @@ export default function DashboardPage() {
     if (!brandId) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/brands/${brandId}`);
+      const res = await authFetch(`/api/brands/${brandId}`);
       const data = await res.json();
       if (res.ok) {
         setPrompts(data.prompts || []);
@@ -90,7 +134,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadBrandsAndProfile();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (selectedBrandId) {
@@ -100,13 +144,35 @@ export default function DashboardPage() {
 
   const selectedBrand = brands.find((b) => b.id === selectedBrandId) || brands[0];
 
-  // Execute manual AI check
+  // Open Add Brand Modal (guarded by login)
+  const handleOpenAddBrand = () => {
+    if (!user) {
+      openAuthModal('signup', 'Create a free account or sign in to add and track your brand.');
+      return;
+    }
+    setShowAddBrand(true);
+  };
+
+  // Open Add Prompt Modal (guarded by login)
+  const handleOpenAddPrompt = () => {
+    if (!user) {
+      openAuthModal('signup', 'Create a free account or sign in to add custom search queries.');
+      return;
+    }
+    setShowAddPrompt(true);
+  };
+
+  // Execute manual AI check (guarded by login)
   const handleRunChecks = async (promptId?: string) => {
+    if (!user) {
+      openAuthModal('signup', 'Create a free account or sign in to run live AI visibility checks.');
+      return;
+    }
     if (!selectedBrand) return;
     setRunningCheck(true);
 
     try {
-      const res = await fetch('/api/checks', {
+      const res = await authFetch('/api/checks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -133,9 +199,13 @@ export default function DashboardPage() {
 
   // Delete Prompt
   const handleDeletePrompt = async (promptId: string) => {
+    if (!user) {
+      openAuthModal('login', 'Please sign in to manage prompts.');
+      return;
+    }
     if (!confirm('Are you sure you want to remove this query from tracking?')) return;
     try {
-      const res = await fetch(`/api/prompts?id=${promptId}`, { method: 'DELETE' });
+      const res = await authFetch(`/api/prompts?id=${promptId}`, { method: 'DELETE' });
       if (res.ok && selectedBrand) {
         loadBrandDetails(selectedBrand.id);
       }
@@ -155,6 +225,119 @@ export default function DashboardPage() {
       <Navbar />
 
       <main style={{ maxWidth: '1240px', width: '100%', margin: '0 auto', padding: '32px 24px', flex: 1 }}>
+        {/* GUEST DEMO MODE BANNER */}
+        {!user && (
+          <div
+            style={{
+              background: 'linear-gradient(135deg, rgba(8, 25, 46, 0.95) 0%, rgba(13, 34, 59, 0.95) 100%)',
+              border: '1px solid rgba(201, 164, 92, 0.35)',
+              borderRadius: '12px',
+              padding: '16px 20px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexWrap: 'wrap',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '8px',
+                  background: 'rgba(201, 164, 92, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--gold-primary)',
+                  flexShrink: 0,
+                }}
+              >
+                <Sparkles size={20} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '14px', color: '#FFF' }}>
+                  Previewing BrandSight AI in Guest Demo Mode
+                </div>
+                <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>
+                  You are exploring sample data. Sign in or create a free account to track your own brands and run live AI search audits.
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                onClick={() => openAuthModal('login')}
+                className="btn-secondary"
+                style={{ fontSize: '12.5px', padding: '7px 14px' }}
+              >
+                <LogIn size={14} />
+                <span>Sign In</span>
+              </button>
+              <button
+                onClick={() => openAuthModal('signup', 'Create a free account to track your brand.')}
+                className="btn-gold"
+                style={{ fontSize: '12.5px', padding: '7px 16px' }}
+              >
+                <span>Create Free Account</span>
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* UNLINKED LICENSE KEY BANNER */}
+        {user && unlinkedKey && (
+          <div
+            style={{
+              background: 'rgba(201, 164, 92, 0.15)',
+              border: '1px solid rgba(201, 164, 92, 0.45)',
+              borderRadius: '10px',
+              padding: '14px 18px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '14px',
+              flexWrap: 'wrap',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Key size={18} style={{ color: 'var(--gold-primary)' }} />
+              <div style={{ fontSize: '13px', color: '#FFF' }}>
+                Active license key found on this browser (<strong>{unlinkedKey.slice(0, 8)}...</strong>). Link it now to activate Pro on your account across all devices.
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button
+                onClick={handleLinkDetectedKey}
+                disabled={linkingKey}
+                className="btn-gold"
+                style={{ fontSize: '12px', padding: '6px 14px' }}
+              >
+                {linkingKey ? 'Linking...' : 'Link to My Account'}
+              </button>
+              <button
+                onClick={() => {
+                  try {
+                    localStorage.removeItem('brandsight_license_key');
+                  } catch {
+                    // ignore
+                  }
+                  setUnlinkedKey(null);
+                }}
+                className="btn-secondary"
+                style={{ fontSize: '12px', padding: '6px 10px' }}
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* TOP DASHBOARD CONTROL BAR */}
         <div style={{
           display: 'flex',
@@ -182,29 +365,35 @@ export default function DashboardPage() {
 
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <select
-                  value={selectedBrandId}
-                  onChange={(e) => setSelectedBrandId(e.target.value)}
-                  style={{
-                    background: '#0D223B',
-                    color: '#FFF',
-                    fontWeight: 700,
-                    fontSize: '18px',
-                    border: '1px solid var(--border-medium)',
-                    borderRadius: '8px',
-                    padding: '6px 12px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {brands.map((b) => (
-                    <option key={b.id} value={b.id}>
-                      {b.name} ({b.website_url.replace(/^https?:\/\//i, '').split('/')[0]})
-                    </option>
-                  ))}
-                </select>
+                {brands.length > 0 ? (
+                  <select
+                    value={selectedBrandId}
+                    onChange={(e) => setSelectedBrandId(e.target.value)}
+                    style={{
+                      background: '#0D223B',
+                      color: '#FFF',
+                      fontWeight: 700,
+                      fontSize: '18px',
+                      border: '1px solid var(--border-medium)',
+                      borderRadius: '8px',
+                      padding: '6px 12px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {brands.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name} ({b.website_url.replace(/^https?:\/\//i, '').split('/')[0]})
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <span style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
+                    No Brand Added
+                  </span>
+                )}
 
                 <button
-                  onClick={() => setShowAddBrand(true)}
+                  onClick={handleOpenAddBrand}
                   className="btn-secondary"
                   style={{ padding: '6px 10px', fontSize: '12px' }}
                   title="Add Another Brand"
@@ -215,7 +404,7 @@ export default function DashboardPage() {
               </div>
 
               <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
-                Frequency: <strong>{selectedBrand?.check_frequency?.toUpperCase()}</strong> &bull;{' '}
+                Frequency: <strong>{selectedBrand?.check_frequency?.toUpperCase() || 'WEEKLY'}</strong> &bull;{' '}
                 Last checked: {selectedBrand?.last_checked_at ? new Date(selectedBrand.last_checked_at).toLocaleString() : 'Not checked yet'}
               </div>
             </div>
@@ -483,7 +672,7 @@ export default function DashboardPage() {
             </div>
 
             <button
-              onClick={() => setShowAddPrompt(true)}
+              onClick={handleOpenAddPrompt}
               className="btn-gold"
               style={{ fontSize: '13px', padding: '8px 14px' }}
             >

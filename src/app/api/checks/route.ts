@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
-import { getChecks, getBrandById, getPrompts } from '@/lib/storage';
+import { getChecks, getBrandById, getPrompts, recordCheck } from '@/lib/storage';
 import { executeCheck } from '@/lib/checker';
 import { AIProvider } from '@/types';
+import { getAuthUser } from '@/lib/authServer';
 
 export async function GET(req: Request) {
   try {
+    const user = await getAuthUser(req);
     const { searchParams } = new URL(req.url);
     const brandId = searchParams.get('brandId') || undefined;
-    const checks = await getChecks(brandId);
+    const checks = await getChecks(brandId, user?.id);
     return NextResponse.json({ checks });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Error fetching checks';
@@ -17,6 +19,14 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const user = await getAuthUser(req);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Please log in or create a free account to run AI visibility checks.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { brand_id, prompt_id, providers, force_refresh = false } = body;
 
@@ -24,12 +34,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'brand_id is required' }, { status: 400 });
     }
 
-    const brand = await getBrandById(brand_id);
+    const brand = await getBrandById(brand_id, user.id);
     if (!brand) {
-      return NextResponse.json({ error: 'Brand not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Brand not found or access denied' }, { status: 404 });
     }
 
-    const allPrompts = await getPrompts(brand_id);
+    const allPrompts = await getPrompts(brand_id, user.id);
     const targetPrompts = prompt_id
       ? allPrompts.filter((p) => p.id === prompt_id)
       : allPrompts.filter((p) => p.is_active);
@@ -55,6 +65,9 @@ export async function POST(req: Request) {
             provider,
             forceRefresh: Boolean(force_refresh),
           });
+
+          // Ensure check is saved associated with this user
+          await recordCheck(result, user.id);
           results.push(result);
         } catch (checkErr: unknown) {
           console.error(`Check failed for ${provider} on "${prompt.query_text}":`, checkErr);

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { HelpCircle, X, Sparkles, AlertCircle, Plus } from 'lucide-react';
 import { Brand } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 interface AddPromptModalProps {
   brand: Brand;
@@ -11,6 +12,7 @@ interface AddPromptModalProps {
 }
 
 export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptModalProps) {
+  const { authFetch } = useAuth();
   const [queryText, setQueryText] = useState('');
   const [category, setCategory] = useState('Product Recommendation');
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
     setError(null);
 
     try {
-      const res = await fetch('/api/prompts', {
+      const res = await authFetch('/api/prompts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

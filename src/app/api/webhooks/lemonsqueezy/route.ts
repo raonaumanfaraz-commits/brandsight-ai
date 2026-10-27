@@ -180,8 +180,8 @@ export async function POST(req: NextRequest) {
         // If license key is still not present (e.g. test order without key), format fallback identifier
         const finalLicenseKey = licenseKey || `LS-${data?.id || Date.now()}`;
 
-        // Upgrade profile and plan limits
-        await upgradePlan(tier, finalLicenseKey);
+        // Upgrade profile and plan limits for customer email if matched
+        await upgradePlan(tier, finalLicenseKey, undefined, customerEmail);
 
         // Record license in Supabase licenses table
         if (supabase) {
@@ -214,7 +214,7 @@ export async function POST(req: NextRequest) {
           }
 
           const finalLicenseKey = licenseKey || `LS-${data?.id || Date.now()}`;
-          await upgradePlan(tier, finalLicenseKey);
+          await upgradePlan(tier, finalLicenseKey, undefined, customerEmail);
 
           if (supabase) {
             await supabase.from('licenses').upsert(

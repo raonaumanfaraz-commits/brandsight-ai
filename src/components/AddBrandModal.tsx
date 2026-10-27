@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Building2, X, Plus, AlertCircle, Sparkles } from 'lucide-react';
 import { PlanTier } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 interface AddBrandModalProps {
   planTier: PlanTier;
@@ -11,6 +12,7 @@ interface AddBrandModalProps {
 }
 
 export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrandModalProps) {
+  const { authFetch } = useAuth();
   const [name, setName] = useState('');
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [industry, setIndustry] = useState('Technology & SaaS');
@@ -35,7 +37,7 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
         .map((c) => c.trim())
         .filter((c) => c.length > 0);
 
-      const res = await fetch('/api/brands', {
+      const res = await authFetch('/api/brands', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
