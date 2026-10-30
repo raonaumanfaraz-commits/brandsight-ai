@@ -201,11 +201,11 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
                     <td style={{ padding: '10px 14px', color: '#34D399', fontWeight: 600 }}>$0.000000</td>
                   </tr>
                   <tr>
-                    <td style={{ padding: '10px 14px', fontWeight: 600 }}>Perplexity (Sonar)</td>
-                    <td style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>~$0.005/req (Key optional)</td>
-                    <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.perplexity?.checks || 0}</td>
-                    <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.perplexity?.tokens?.toLocaleString() || 0}</td>
-                    <td style={{ padding: '10px 14px', fontWeight: 600 }}>${(summary?.providerUsage?.perplexity?.cost || 0).toFixed(6)}</td>
+                    <td style={{ padding: '10px 14px', fontWeight: 600 }}>DeepSeek (deepseek-chat)</td>
+                    <td style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>~$0.28/1M in &bull; $0.42/1M out</td>
+                    <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.deepseek?.checks || 0}</td>
+                    <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.deepseek?.tokens?.toLocaleString() || 0}</td>
+                    <td style={{ padding: '10px 14px', fontWeight: 600 }}>${(summary?.providerUsage?.deepseek?.cost || 0).toFixed(6)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -245,7 +245,7 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
                         </td>
                         <td style={{ padding: '8px 12px', fontWeight: 600 }}>{log.brand_name || 'Brand'}</td>
                         <td style={{ padding: '8px 12px' }}>
-                          <span className={log.provider === 'openai' ? 'badge-amber' : log.provider === 'gemini' ? 'badge-blue' : 'badge-purple'}>
+                          <span className={log.provider === 'openai' ? 'badge-amber' : log.provider === 'gemini' ? 'badge-blue' : 'badge-green'}>
                             {log.provider}
                           </span>
                         </td>

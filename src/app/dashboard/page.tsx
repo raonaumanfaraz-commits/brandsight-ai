@@ -262,9 +262,22 @@ export default function DashboardPage() {
 
   // Filter checks by provider
   const filteredChecks = checks.filter((c) => {
+    if (!['openai', 'gemini', 'deepseek'].includes(c.provider)) return false;
     if (selectedProviderFilter === 'all') return true;
     return c.provider === selectedProviderFilter;
   });
+
+  // DeepSeek status derived from its latest recorded check (key never reaches the client)
+  const latestDeepSeek = checks
+    .filter((c) => c.provider === 'deepseek')
+    .sort((a, b) => new Date(b.checked_at).getTime() - new Date(a.checked_at).getTime())[0];
+  const deepseekStatus: 'none' | 'coming_soon' | 'failed' | 'configured' = !latestDeepSeek
+    ? 'none'
+    : latestDeepSeek.status === 'skipped'
+      ? 'coming_soon'
+      : latestDeepSeek.status === 'failed'
+        ? 'failed'
+        : 'configured';
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -679,7 +692,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Perplexity */}
+              {/* DeepSeek */}
               <div style={{
                 background: 'rgba(8, 25, 46, 0.7)',
                 border: '1px solid var(--border-subtle)',
@@ -687,12 +700,46 @@ export default function DashboardPage() {
                 padding: '12px 14px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFF' }}>Perplexity AI (Sonar)</span>
-                  <span className="badge-purple">Coming Soon / Key Optional</span>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFF' }}>DeepSeek (deepseek-chat)</span>
+                  {deepseekStatus === 'configured' && (
+                    <span style={{ fontSize: '13px', fontWeight: 800, color: '#34D399' }}>
+                      {stats?.providerBreakdown.deepseek.rate || 0}%
+                    </span>
+                  )}
+                  {deepseekStatus === 'coming_soon' && <span className="badge-purple">Coming Soon</span>}
+                  {deepseekStatus === 'failed' && (
+                    <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#F87171', padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 600 }}>
+                      Check failed
+                    </span>
+                  )}
+                  {deepseekStatus === 'none' && <span className="badge-blue">No checks yet</span>}
                 </div>
-                <p style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  Add <code>PERPLEXITY_API_KEY</code> in <code>.env.local</code> to activate live Sonar search.
-                </p>
+                {deepseekStatus === 'configured' && (
+                  <>
+                    <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                      <div style={{ width: `${stats?.providerBreakdown.deepseek.rate || 0}%`, height: '100%', background: '#34D399' }} />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
+                      <span>{stats?.providerBreakdown.deepseek.mentions || 0} mentions</span>
+                      <span>{stats?.providerBreakdown.deepseek.total || 0} checks &bull; Configured</span>
+                    </div>
+                  </>
+                )}
+                {deepseekStatus === 'coming_soon' && (
+                  <p style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    DeepSeek API key not set on the server &mdash; Coming soon.
+                  </p>
+                )}
+                {deepseekStatus === 'failed' && (
+                  <p style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    {latestDeepSeek?.error_message || 'Last DeepSeek check failed.'}
+                  </p>
+                )}
+                {deepseekStatus === 'none' && (
+                  <p style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    Run a check to see DeepSeek results.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -832,7 +879,7 @@ export default function DashboardPage() {
 
             {/* Provider Filter Tabs */}
             <div style={{ display: 'flex', gap: '6px' }}>
-              {(['all', 'openai', 'gemini', 'perplexity'] as const).map((prov) => (
+              {(['all', 'openai', 'gemini', 'deepseek'] as const).map((prov) => (
                 <button
                   key={prov}
                   onClick={() => setSelectedProviderFilter(prov)}
@@ -874,7 +921,7 @@ export default function DashboardPage() {
                         {new Date(c.checked_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </td>
                       <td style={{ padding: '12px' }}>
-                        <span className={c.provider === 'openai' ? 'badge-amber' : c.provider === 'gemini' ? 'badge-blue' : 'badge-purple'}>
+                        <span className={c.provider === 'openai' ? 'badge-amber' : c.provider === 'gemini' ? 'badge-blue' : 'badge-green'}>
                           {c.provider}
                         </span>
                       </td>
@@ -889,7 +936,13 @@ export default function DashboardPage() {
                         )}
                       </td>
                       <td style={{ padding: '12px' }}>
-                        {c.brand_mentioned ? (
+                        {c.status === 'skipped' ? (
+                          <span className="badge-purple">Coming Soon</span>
+                        ) : c.status === 'failed' ? (
+                          <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#F87171', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '999px' }}>
+                            Check failed
+                          </span>
+                        ) : c.brand_mentioned ? (
                           <span className="badge-green">
                             <CheckCircle2 size={12} style={{ display: 'inline', marginRight: '4px' }} />
                             Rank #{c.mention_position || 1}

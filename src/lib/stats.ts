@@ -7,7 +7,14 @@ import { CheckResult, BrandStats } from '@/types';
 import { extractDomain } from './analyzer';
 
 export function computeBrandStats(brandId: string, checks: CheckResult[]): BrandStats {
-  const brandChecks = checks.filter((c) => c.brand_id === brandId && c.status !== 'failed');
+  const ACTIVE_PROVIDERS: string[] = ['openai', 'gemini', 'deepseek'];
+  const brandChecks = checks.filter(
+    (c) =>
+      c.brand_id === brandId &&
+      c.status !== 'failed' &&
+      c.status !== 'skipped' &&
+      ACTIVE_PROVIDERS.includes(c.provider)
+  );
   const totalChecks = brandChecks.length;
 
   if (totalChecks === 0) {
@@ -22,7 +29,7 @@ export function computeBrandStats(brandId: string, checks: CheckResult[]): Brand
       providerBreakdown: {
         openai: { total: 0, mentions: 0, rate: 0 },
         gemini: { total: 0, mentions: 0, rate: 0 },
-        perplexity: { total: 0, mentions: 0, rate: 0, isAvailable: false },
+        deepseek: { total: 0, mentions: 0, rate: 0 },
       },
       competitorMentions: [],
       trendHistory: [],
@@ -37,7 +44,7 @@ export function computeBrandStats(brandId: string, checks: CheckResult[]): Brand
   const positions = mentionedChecks
     .map((c) => c.mention_position)
     .filter((pos): pos is number => typeof pos === 'number' && pos > 0);
-  
+
   const avgPosition =
     positions.length > 0
       ? parseFloat((positions.reduce((a, b) => a + b, 0) / positions.length).toFixed(1))
@@ -47,18 +54,18 @@ export function computeBrandStats(brandId: string, checks: CheckResult[]): Brand
   const providerStats = {
     openai: { total: 0, mentions: 0, rate: 0 },
     gemini: { total: 0, mentions: 0, rate: 0 },
-    perplexity: { total: 0, mentions: 0, rate: 0, isAvailable: true },
+    deepseek: { total: 0, mentions: 0, rate: 0 },
   };
 
   for (const c of brandChecks) {
-    if (c.provider === 'openai' || c.provider === 'gemini' || c.provider === 'perplexity') {
+    if (c.provider === 'openai' || c.provider === 'gemini' || c.provider === 'deepseek') {
       const p = providerStats[c.provider];
       p.total += 1;
       if (c.brand_mentioned) p.mentions += 1;
     }
   }
 
-  for (const key of ['openai', 'gemini', 'perplexity'] as const) {
+  for (const key of ['openai', 'gemini', 'deepseek'] as const) {
     const p = providerStats[key];
     p.rate = p.total > 0 ? Math.round((p.mentions / p.total) * 100) : 0;
   }

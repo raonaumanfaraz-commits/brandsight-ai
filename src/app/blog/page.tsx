@@ -8,7 +8,7 @@ import { Sparkles, Calendar, ArrowRight, BookOpen } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Blog — Generative Engine Optimization (GEO) & AI Search Insights | BrandSight AI',
   description:
-    'Guides, research, and strategies on Generative Engine Optimization (GEO), AI search visibility, and tracking brand recommendations across ChatGPT, Gemini, and Perplexity.',
+    'Guides, research, and strategies on Generative Engine Optimization (GEO), AI search visibility, and tracking brand recommendations across ChatGPT, Gemini, and DeepSeek.',
   alternates: {
     canonical: 'https://brandsight-ai.coderao.com/blog',
   },
@@ -143,7 +143,7 @@ export default function BlogIndexPage() {
             Is ChatGPT Recommending Your Brand?
           </h3>
           <p style={{ fontSize: '14px', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 24px' }}>
-            Track your mention rate, recommendation rankings, and cited sources across OpenAI, Google Gemini, and Perplexity in real-time.
+            Track your mention rate, recommendation rankings, and cited sources across OpenAI, Google Gemini, and DeepSeek in real-time.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
             <Link href="/dashboard" className="btn-gold" style={{ fontSize: '14px', padding: '12px 24px' }}>

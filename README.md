@@ -1,6 +1,6 @@
 # ⚡ BrandSight AI — Generative Engine Optimization (GEO) Tracker
 
-> **AI Search Visibility Tracker**: Monitor your brand's presence, list rank position, and cited reference sources across **ChatGPT (OpenAI)**, **Google Gemini**, and **Perplexity AI**.
+> **AI Search Visibility Tracker**: Monitor your brand's presence, list rank position, and cited reference sources across **ChatGPT (OpenAI)**, **Google Gemini**, and **DeepSeek**.
 
 ---
 
@@ -12,7 +12,7 @@
 2. **Multi-Engine AI Checks**:
    - **OpenAI API** (`gpt-4o-mini`): Ultra cost-effective default model.
    - **Google Gemini API** (`gemini-1.5-flash`): Generous free tier integration with Google search grounding.
-   - **Perplexity API** (`sonar`): Optional; if no key is provided, safely displays as *"Coming Soon"* without interrupting checks.
+   - **DeepSeek API** (`deepseek-chat`): OpenAI-compatible, low cost. Same prompts, mention detection, 24h cache and token/cost logging. If `DEEPSEEK_API_KEY` is not set, it safely displays as *"Coming Soon"* without interrupting the other engines.
 3. **Mention & Citation Detection**:
    - Detects whether the brand was mentioned (exact & domain matching).
    - Identifies recommendation ranking position (Rank #1, #2, etc.).
@@ -43,7 +43,7 @@
 - **Framework**: Next.js 14 (App Router) + TypeScript
 - **Styling**: Vanilla CSS Design System with CodeRao Navy (`#08192E`) and Gold (`#C9A45C`) branding
 - **Database**: PostgreSQL (Supabase schema provided) + zero-setup local persistent fallback (`.data/store.json`)
-- **AI Providers**: OpenAI (`gpt-4o-mini`), Google Gemini (`gemini-1.5-flash`), Perplexity (`sonar`)
+- **AI Providers**: OpenAI (`gpt-4o-mini`), Google Gemini (`gemini-1.5-flash`), DeepSeek (`deepseek-chat`)
 - **Payment & Licensing**: Lemon Squeezy API
 - **Email**: Resend API / Responsive HTML templates
 
@@ -75,7 +75,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 # AI Provider API Keys
 OPENAI_API_KEY=sk-proj-your-openai-api-key
 GEMINI_API_KEY=AIzaSy-your-google-gemini-key
-PERPLEXITY_API_KEY=pplx-your-key-here  # Optional: If omitted, UI shows "Coming soon"
+DEEPSEEK_API_KEY=your-deepseek-key  # Server-side only. If omitted, UI shows "Coming soon"
 
 # Supabase (Optional for local testing; app includes built-in persistent local fallback)
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
@@ -122,6 +122,7 @@ When you are ready to connect a cloud Supabase project:
    - `licenses` (Lemon Squeezy activations)
    - Complete Row Level Security (RLS) policies and performance indexes.
 5. Copy your **Project URL** and **Anon Key** into `.env.local`.
+6. **Existing databases**: run `supabase/migration_deepseek_provider.sql` once so the `checks.provider` constraint accepts `deepseek` (it also removes legacy rows of the retired provider).
 
 ---
 
@@ -161,6 +162,7 @@ To configure the freemium tiers with single-device license activations:
 2. Go to [Vercel](https://vercel.com) and click **Add New Project**.
 3. Select your repository.
 4. In the **Environment Variables** section, copy the variables from `.env.local`.
+   - **`DEEPSEEK_API_KEY`** must be added to the **Production** environment (Project Settings -> Environment Variables -> tick *Production*). Never prefix it with `NEXT_PUBLIC_` and never commit its value; it is read server-side only. Redeploy after adding it.
 5. Click **Deploy**. Vercel will build and deploy your Next.js application globally.
 
 ---
@@ -169,3 +171,9 @@ To configure the freemium tiers with single-device license activations:
 
 - **Isolated Scope**: All files and operations are strictly contained within `projects/BrandSight`. No external project files have been touched.
 - **Cost Guardrails**: Built-in 24h caching and model economy safeguards protect your API budget against runaway costs.
+
+---
+
+## Provider Change Note
+
+Perplexity has been **removed** from BrandSight AI (paid API). The supported engines are now exactly three: **OpenAI, Google Gemini and DeepSeek**. `PERPLEXITY_API_KEY` is no longer read anywhere and can be deleted from your environment.

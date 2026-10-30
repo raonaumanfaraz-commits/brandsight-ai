@@ -1,7 +1,7 @@
 -- ========================================================
 -- BrandSight AI - Database Schema (Supabase / PostgreSQL)
 -- Description: AI Search Visibility Tracker (GEO Tracker)
--- Supports OpenAI (gpt-4o-mini), Gemini (free), Perplexity
+-- Supports OpenAI (gpt-4o-mini), Gemini (free), DeepSeek (deepseek-chat)
 -- ========================================================
 
 -- Enable UUID extension if not already enabled
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS checks (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   brand_id UUID NOT NULL REFERENCES brands(id) ON DELETE CASCADE,
   prompt_id UUID NOT NULL REFERENCES prompts(id) ON DELETE CASCADE,
-  provider TEXT NOT NULL CHECK (provider IN ('openai', 'gemini', 'perplexity')),
+  provider TEXT NOT NULL CHECK (provider IN ('openai', 'gemini', 'deepseek')),
   model TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'success' CHECK (status IN ('success', 'failed', 'cached', 'skipped')),
   is_cached BOOLEAN NOT NULL DEFAULT FALSE,

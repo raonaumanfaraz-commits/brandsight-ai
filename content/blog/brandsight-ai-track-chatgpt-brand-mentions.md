@@ -41,7 +41,7 @@ Add your brand name, official website URL, and 5 to 50 commercial search questio
 BrandSight AI queries three leading AI engines under natural search conditions:
 - **OpenAI (ChatGPT):** Powered by the cost-effective `gpt-4o-mini` model.
 - **Google Gemini:** Leverages Google's generous free tier with search grounding.
-- **Perplexity AI:** Uses live web retrieval models (`sonar`).
+- **DeepSeek:** Uses the low-cost `deepseek-chat` model (OpenAI-compatible API).
 
 ### 3. Mention Detection & List Position Auditing
 Every response is analyzed by BrandSight AI's parsing engine:

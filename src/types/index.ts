@@ -1,6 +1,6 @@
 export type PlanTier = 'free' | 'pro' | 'agency';
 
-export type AIProvider = 'openai' | 'gemini' | 'perplexity';
+export type AIProvider = 'openai' | 'gemini' | 'deepseek';
 
 export interface PlanLimits {
   name: string;
@@ -20,7 +20,7 @@ export const PLAN_LIMITS: Record<PlanTier, PlanLimits> = {
     promptsLimit: 5,
     frequency: 'weekly',
     whiteLabel: false,
-    modelAccess: ['gpt-4o-mini', 'gemini-1.5-flash'],
+    modelAccess: ['gpt-4o-mini', 'gemini-1.5-flash', 'deepseek-chat'],
   },
   pro: {
     name: 'Pro',
@@ -29,7 +29,7 @@ export const PLAN_LIMITS: Record<PlanTier, PlanLimits> = {
     promptsLimit: 50,
     frequency: 'daily',
     whiteLabel: false,
-    modelAccess: ['gpt-4o-mini', 'gemini-1.5-flash', 'perplexity-sonar'],
+    modelAccess: ['gpt-4o-mini', 'gemini-1.5-flash', 'deepseek-chat'],
   },
   agency: {
     name: 'Agency',
@@ -38,7 +38,7 @@ export const PLAN_LIMITS: Record<PlanTier, PlanLimits> = {
     promptsLimit: 200,
     frequency: 'daily',
     whiteLabel: true,
-    modelAccess: ['gpt-4o-mini', 'gemini-1.5-flash', 'perplexity-sonar'],
+    modelAccess: ['gpt-4o-mini', 'gemini-1.5-flash', 'deepseek-chat'],
   },
 };
 
@@ -111,7 +111,7 @@ export interface BrandStats {
   providerBreakdown: {
     openai: { total: number; mentions: number; rate: number };
     gemini: { total: number; mentions: number; rate: number };
-    perplexity: { total: number; mentions: number; rate: number; isAvailable: boolean };
+    deepseek: { total: number; mentions: number; rate: number };
   };
   competitorMentions: { name: string; count: number }[];
   trendHistory: {

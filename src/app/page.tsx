@@ -75,7 +75,7 @@ export default function LandingPage() {
         }}>
           Brands lose up to 60% of search clicks to AI Overviews and chat answers.
           <strong style={{ color: '#FFF' }}> BrandSight AI </strong> tracks whether your brand appears in{' '}
-          <strong style={{ color: 'var(--gold-primary)' }}>ChatGPT, Google Gemini, and Perplexity</strong>,
+          <strong style={{ color: 'var(--gold-primary)' }}>ChatGPT, Google Gemini, and DeepSeek</strong>,
           at which ranking position, and which reference URLs are cited.
         </p>
 
@@ -121,7 +121,7 @@ export default function LandingPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#C084FC' }} />
-            <span>Perplexity AI (Sonar Search)</span>
+            <span>DeepSeek (deepseek-chat)</span>
           </div>
         </div>
       </section>
@@ -198,7 +198,7 @@ export default function LandingPage() {
               Multi-Engine AI Checks
             </h3>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-              We query OpenAI (gpt-4o-mini), Google Gemini (free tier), and Perplexity. Our 24-hour cache guardrail guarantees you never waste duplicate API budget.
+              We query OpenAI (gpt-4o-mini), Google Gemini (free tier), and DeepSeek. Our 24-hour cache guardrail guarantees you never waste duplicate API budget.
             </p>
           </div>
 
@@ -407,7 +407,7 @@ export default function LandingPage() {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Check size={16} style={{ color: 'var(--gold-primary)' }} />
-                  <span>OpenAI, Gemini & Perplexity</span>
+                  <span>OpenAI, Gemini & DeepSeek</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Check size={16} style={{ color: 'var(--gold-primary)' }} />
@@ -537,7 +537,7 @@ export default function LandingPage() {
               <span className="badge-gold">CodeRao</span>
             </div>
             <p style={{ fontSize: '13px', color: 'var(--text-dim)', maxWidth: '420px' }}>
-              Generative Engine Optimization (GEO) tracker monitoring ChatGPT, Gemini, and Perplexity brand recommendations.
+              Generative Engine Optimization (GEO) tracker monitoring ChatGPT, Gemini, and DeepSeek brand recommendations.
             </p>
           </div>
 

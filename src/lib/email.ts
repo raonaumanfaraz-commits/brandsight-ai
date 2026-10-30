@@ -77,23 +77,22 @@ export function generateReportHtml(brand: Brand, stats: BrandStats, change = +8)
         <span>Google Gemini (Free tier)</span>
         <strong>${stats.providerBreakdown.gemini.rate}% mention rate</strong>
       </div>
-      <div class="source-item">
-        <span>Perplexity AI (Sonar)</span>
-        <strong>${stats.providerBreakdown.perplexity.rate}% mention rate</strong>
-      </div>
+      ${stats.providerBreakdown.deepseek.total > 0 ? `<div class="source-item">
+        <span>DeepSeek (deepseek-chat)</span>
+        <strong>${stats.providerBreakdown.deepseek.rate}% mention rate</strong>
+      </div>` : ''}
 
       <div class="section-title">Top Cited Sources</div>
-      ${
-        stats.topSources.length > 0
-          ? `<ul class="source-list">${stats.topSources
-              .slice(0, 4)
-              .map(
-                (s) =>
-                  `<li class="source-item"><span>${s.url}</span><strong>${s.count} mentions</strong></li>`
-              )
-              .join('')}</ul>`
-          : '<p style="font-size: 13px; color: #94A3B8;">No citations recorded yet.</p>'
-      }
+      ${stats.topSources.length > 0
+      ? `<ul class="source-list">${stats.topSources
+        .slice(0, 4)
+        .map(
+          (s) =>
+            `<li class="source-item"><span>${s.url}</span><strong>${s.count} mentions</strong></li>`
+        )
+        .join('')}</ul>`
+      : '<p style="font-size: 13px; color: #94A3B8;">No citations recorded yet.</p>'
+    }
 
       <div class="section-title">Generative Engine Optimization Tip</div>
       <p style="font-size: 13px; line-height: 1.6; color: #CBD5E1; background: rgba(201, 164, 92, 0.08); padding: 12px; border-left: 3px solid #C9A45C; border-radius: 4px;">

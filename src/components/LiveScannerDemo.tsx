@@ -62,7 +62,7 @@ export default function LiveScannerDemo() {
           competitors: ['Opus Clip', 'Munch'],
         },
         {
-          provider: 'Perplexity AI (Sonar)',
+          provider: 'DeepSeek (deepseek-chat)',
           mentioned: false,
           position: null,
           snippet: `Prominent video clipping tools cited in search benchmarks include Opus Clip, Descript, and InVideo.`,
@@ -208,7 +208,7 @@ export default function LiveScannerDemo() {
           style={{ width: '100%', padding: '14px', fontSize: '15px' }}
         >
           {isScanning ? (
-            <span>Querying ChatGPT, Google Gemini & Perplexity...</span>
+            <span>Querying ChatGPT, Google Gemini &amp; DeepSeek...</span>
           ) : (
             <>
               <Search size={18} />

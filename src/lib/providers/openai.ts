@@ -4,7 +4,7 @@
  */
 
 export interface ProviderResponse {
-  provider: 'openai' | 'gemini' | 'perplexity';
+  provider: 'openai' | 'gemini' | 'deepseek';
   model: string;
   responseText: string;
   promptTokens: number;

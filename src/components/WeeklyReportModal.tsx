@@ -223,10 +223,12 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
                     <span>Google Gemini (Free tier)</span>
                     <strong style={{ color: '#C9A45C' }}>{stats.providerBreakdown.gemini.rate}% mention rate</strong>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '4px' }}>
-                    <span>Perplexity AI (Sonar)</span>
-                    <strong style={{ color: '#C9A45C' }}>{stats.providerBreakdown.perplexity.rate}% mention rate</strong>
-                  </div>
+                  {stats.providerBreakdown.deepseek.total > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '4px' }}>
+                      <span>DeepSeek (deepseek-chat)</span>
+                      <strong style={{ color: '#C9A45C' }}>{stats.providerBreakdown.deepseek.rate}% mention rate</strong>
+                    </div>
+                  )}
                 </div>
               </div>
 

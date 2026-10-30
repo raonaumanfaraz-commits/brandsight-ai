@@ -1,12 +1,12 @@
 /**
  * BrandSight AI - Multi-Provider Check Orchestrator
- * Coordinates checks across OpenAI, Gemini, and Perplexity,
+ * Coordinates checks across OpenAI, Gemini, and DeepSeek,
  * applies 24-hour caching, analyzes mentions/citations, and logs token costs.
  */
 import { AIProvider, Brand, CheckResult, PromptItem } from '@/types';
 import { runOpenAICheck, ProviderResponse } from './providers/openai';
 import { runGeminiCheck } from './providers/gemini';
-import { runPerplexityCheck, isPerplexityConfigured } from './providers/perplexity';
+import { runDeepSeekCheck, isDeepSeekConfigured, DEEPSEEK_MODEL } from './providers/deepseek';
 import { analyzeResponse } from './analyzer';
 import { getCachedResult, setCachedResult } from './cache';
 import { recordCheck } from './storage';
@@ -24,7 +24,7 @@ export interface RunCheckOptions {
 function generateDemoResponse(promptText: string, brand: Brand, provider: AIProvider): ProviderResponse {
   const isRankedFirst = Math.random() > 0.35;
   const competitors = brand.known_competitors.length > 0 ? brand.known_competitors : ['Alternative AI', 'MarketTool'];
-  
+
   let responseText = '';
   if (isRankedFirst) {
     responseText = `Based on current market analysis for "${promptText}", here are top recommended solutions:\n\n1. **${brand.name}** (${brand.website_url}) - Leading platform praised for ease of use, robust automation, and high user satisfaction.\n2. **${competitors[0] || 'Competitor A'}** - Reliable enterprise choice with extensive features.\n3. **${competitors[1] || 'Competitor B'}** - Popular budget-friendly alternative.\n\nSources: [TechReviews](https://techreviews.com/rankings), [IndustryBenchmark](${brand.website_url}/press)`;
@@ -35,13 +35,13 @@ function generateDemoResponse(promptText: string, brand: Brand, provider: AIProv
   const modelMap: Record<AIProvider, string> = {
     openai: 'gpt-4o-mini',
     gemini: 'gemini-1.5-flash',
-    perplexity: 'sonar',
+    deepseek: DEEPSEEK_MODEL,
   };
 
   const costMap: Record<AIProvider, number> = {
     openai: 0.000045,
     gemini: 0.0,
-    perplexity: 0.0051,
+    deepseek: 0.0,
   };
 
   return {
@@ -126,25 +126,24 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
           throw err;
         }
       }
-    } else if (provider === 'perplexity') {
-      if (!isPerplexityConfigured()) {
-        // As per prompt: "Perplexity API se har prompt chalao (agar API key na ho to us provider ko 'Coming soon' dikhao, app na roko)"
+    } else if (provider === 'deepseek') {
+      if (!isDeepSeekConfigured()) {
+        // Key missing: mark 'Coming soon' without breaking other providers. No fake data.
         const comingSoonResult: CheckResult = {
           id: `check_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
           brand_id: brand.id,
           prompt_id: prompt.id,
           prompt_text: prompt.query_text,
-          provider: 'perplexity',
-          model: 'sonar',
+          provider: 'deepseek',
+          model: DEEPSEEK_MODEL,
           status: 'skipped',
           is_cached: false,
           brand_mentioned: false,
           mention_position: null,
-          mention_snippet: 'Perplexity search check is marked Coming Soon (Configure PERPLEXITY_API_KEY in .env.local to activate).',
+          mention_snippet: null,
           competitors_mentioned: [],
           cited_sources: [],
-          raw_response: 'Provider integration inactive. Perplexity API key pending.',
-          error_message: 'Coming soon: Perplexity API key not configured',
+          error_message: 'Coming soon: DeepSeek API key not configured',
           prompt_tokens: 0,
           completion_tokens: 0,
           total_tokens: 0,
@@ -154,7 +153,7 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
         await recordCheck(comingSoonResult);
         return comingSoonResult;
       }
-      providerResp = await runPerplexityCheck(prompt.query_text);
+      providerResp = await runDeepSeekCheck(prompt.query_text);
     } else {
       throw new Error(`Unsupported AI provider: ${provider}`);
     }
@@ -166,7 +165,7 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
       prompt_id: prompt.id,
       prompt_text: prompt.query_text,
       provider,
-      model: provider === 'openai' ? 'gpt-4o-mini' : provider === 'gemini' ? 'gemini-1.5-flash' : 'sonar',
+      model: provider === 'openai' ? 'gpt-4o-mini' : provider === 'gemini' ? 'gemini-1.5-flash' : DEEPSEEK_MODEL,
       status: 'failed',
       is_cached: false,
       brand_mentioned: false,

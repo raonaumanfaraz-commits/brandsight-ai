@@ -139,7 +139,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#FFF', marginBottom: '8px' }}>
-            Track Your Brand in ChatGPT, Gemini & Perplexity
+            Track Your Brand in ChatGPT, Gemini & DeepSeek
           </h3>
 
           <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '20px' }}>

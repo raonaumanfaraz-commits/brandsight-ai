@@ -48,10 +48,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No active prompts found to check' }, { status: 400 });
     }
 
-    // Default providers: OpenAI & Gemini (and Perplexity if chosen or default)
-    const selectedProviders: AIProvider[] = Array.isArray(providers) && providers.length > 0
-      ? providers
-      : ['openai', 'gemini', 'perplexity'];
+    // Default providers: OpenAI, Gemini and DeepSeek
+    const requested: AIProvider[] = Array.isArray(providers)
+      ? providers.filter((p: string) => ['openai', 'gemini', 'deepseek'].includes(p))
+      : [];
+    const selectedProviders: AIProvider[] = requested.length > 0
+      ? requested
+      : ['openai', 'gemini', 'deepseek'];
 
     const results = [];
 
