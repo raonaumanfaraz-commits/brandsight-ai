@@ -1,12 +1,12 @@
 /**
  * Google Gemini Provider - BrandSight AI
- * Uses Gemini 2.0 Flash (Free Tier) with Google search grounding citations.
+ * Uses Gemini 3.8 Flash with Google search grounding citations.
  */
 import { ProviderResponse } from './openai';
 
 export async function runGeminiCheck(prompt: string, apiKey?: string): Promise<ProviderResponse> {
   const key = apiKey || process.env.GEMINI_API_KEY;
-  const model = 'gemini-2.0-flash';
+  const model = 'gemini-3.8-flash';
 
   if (!key || key.startsWith('your_') || key === 'dummy') {
     throw new Error('GEMINI_API_KEY is not configured.');
