@@ -16,6 +16,7 @@ export interface RunCheckOptions {
   prompt: PromptItem;
   provider: AIProvider;
   forceRefresh?: boolean;
+  userId?: string;
 }
 
 /**
@@ -58,7 +59,7 @@ function generateDemoResponse(promptText: string, brand: Brand, provider: AIProv
 }
 
 export async function executeCheck(options: RunCheckOptions): Promise<CheckResult> {
-  const { brand, prompt, provider, forceRefresh = false } = options;
+  const { brand, prompt, provider, forceRefresh = false, userId } = options;
 
   // 1. Check 24h Cache guardrail (unless forced)
   if (!forceRefresh) {
@@ -94,7 +95,7 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
         checked_at: new Date().toISOString(),
       };
 
-      await recordCheck(cachedResult);
+      await recordCheck(cachedResult, userId);
       return cachedResult;
     }
   }
@@ -150,7 +151,7 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
           estimated_cost: 0,
           checked_at: new Date().toISOString(),
         };
-        await recordCheck(comingSoonResult);
+        await recordCheck(comingSoonResult, userId);
         return comingSoonResult;
       }
       providerResp = await runDeepSeekCheck(prompt.query_text);
@@ -180,7 +181,7 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
       estimated_cost: 0,
       checked_at: new Date().toISOString(),
     };
-    await recordCheck(failedResult);
+    await recordCheck(failedResult, userId);
     return failedResult;
   }
 
@@ -218,6 +219,6 @@ export async function executeCheck(options: RunCheckOptions): Promise<CheckResul
     checked_at: new Date().toISOString(),
   };
 
-  await recordCheck(checkResult);
+  await recordCheck(checkResult, userId);
   return checkResult;
 }

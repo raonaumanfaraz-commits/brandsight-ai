@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getChecks, getBrandById, getPrompts, recordCheck } from '@/lib/storage';
+import { getChecks, getBrandById, getPrompts } from '@/lib/storage';
 import { executeCheck } from '@/lib/checker';
 import { AIProvider } from '@/types';
 import { getAuthUser } from '@/lib/authServer';
@@ -67,10 +67,10 @@ export async function POST(req: Request) {
             prompt,
             provider,
             forceRefresh: Boolean(force_refresh),
+            userId: user.id,
           });
 
-          // Ensure check is saved associated with this user
-          await recordCheck(result, user.id);
+          // executeCheck already records the check internally (with userId)
           results.push(result);
         } catch (checkErr: unknown) {
           console.error(`Check failed for ${provider} on "${prompt.query_text}":`, checkErr);
