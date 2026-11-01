@@ -107,7 +107,7 @@ export default function Navbar() {
             <a href="/#live-demo" style={{ transition: 'color 0.2s' }}>
               Live Scanner
             </a>
-            <a href="/#pricing" style={{ transition: 'color 0.2s' }}>
+            <a href="/pricing" style={{ transition: 'color 0.2s' }}>
               Pricing
             </a>
             <a href="/#guardrails" style={{ transition: 'color 0.2s' }}>
