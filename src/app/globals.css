@@ -344,3 +344,12 @@ input, textarea, select {
   border-radius: 4px;
   font-size: 14px;
 }
+
+.blog-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  margin: 24px 0 8px;
+  display: block;
+}
