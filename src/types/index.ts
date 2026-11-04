@@ -63,6 +63,16 @@ export interface PromptItem {
   created_at: string;
 }
 
+export type SuggestionPriority = 'High' | 'Medium' | 'Low';
+
+export interface SeoFixSuggestion {
+  id: string;
+  title: string;
+  issue: string; // what is missing or wrong
+  fix: string;   // concrete fix recommendation
+  priority: SuggestionPriority;
+}
+
 export interface CheckResult {
   id: string;
   brand_id: string;
@@ -84,6 +94,7 @@ export interface CheckResult {
   total_tokens: number;
   estimated_cost: number;
   checked_at: string;
+  suggestions?: SeoFixSuggestion[];
 }
 
 export interface TokenLog {

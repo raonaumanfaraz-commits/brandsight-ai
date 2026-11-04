@@ -9,6 +9,7 @@ import AddPromptModal from '@/components/AddPromptModal';
 import WeeklyReportModal from '@/components/WeeklyReportModal';
 import AdminGuardrailsModal from '@/components/AdminGuardrailsModal';
 import LicenseModal from '@/components/LicenseModal';
+import SeoFixSuggestions from '@/components/SeoFixSuggestions';
 import { useAuth } from '@/context/AuthContext';
 import {
   Building2,
@@ -857,6 +858,16 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        {/* SEO FIX SUGGESTIONS SECTION (Derived strictly from completed check results) */}
+        {selectedBrand && (
+          <SeoFixSuggestions
+            brand={selectedBrand}
+            checks={checks}
+            planTier={activeTier}
+            authFetch={authFetch}
+          />
+        )}
 
         {/* CHECKS HISTORY AUDIT TABLE */}
         <div className="glass-panel" style={{ padding: '24px' }}>
