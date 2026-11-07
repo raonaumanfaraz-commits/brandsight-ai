@@ -11,10 +11,14 @@ interface LicenseModalProps {
 
 export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) {
   const { user, authFetch, refreshProfile } = useAuth();
+  const [activeTab, setActiveTab] = useState<'lemonsqueezy' | 'appsumo'>('lemonsqueezy');
   const [licenseKey, setLicenseKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successTier, setSuccessTier] = useState<string | null>(null);
+  const [appsumoCode, setAppsumoCode] = useState('');
+  const [appsumoLoading, setAppsumoLoading] = useState(false);
+  const [appsumoError, setAppsumoError] = useState<string | null>(null);
 
   const handleActivate = async (keyToUse?: string) => {
     const key = (keyToUse || licenseKey).trim();
@@ -57,6 +61,41 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
       setError(msg);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRedeemAppSumo = async () => {
+    const code = appsumoCode.trim().toUpperCase();
+    if (!code) {
+      setAppsumoError('Please enter your AppSumo code.');
+      return;
+    }
+
+    setAppsumoLoading(true);
+    setAppsumoError(null);
+
+    try {
+      const res = await authFetch('/api/license/redeem-appsumo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Redemption failed');
+      }
+
+      setSuccessTier(data.tierLabel || 'AppSumo');
+      await refreshProfile();
+
+      if (onSuccess) onSuccess();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Redemption error';
+      setAppsumoError(msg);
+    } finally {
+      setAppsumoLoading(false);
     }
   };
 
@@ -155,6 +194,54 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
           </div>
         )}
 
+        {/* License source tabs */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '8px',
+            marginBottom: '16px',
+            background: 'rgba(8, 25, 46, 0.7)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '8px',
+            padding: '4px',
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setActiveTab('lemonsqueezy')}
+            style={{
+              flex: 1,
+              padding: '8px',
+              borderRadius: '6px',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: 600,
+              background: activeTab === 'lemonsqueezy' ? 'rgba(201, 164, 92, 0.2)' : 'transparent',
+              color: activeTab === 'lemonsqueezy' ? 'var(--gold-primary)' : 'var(--text-muted)',
+            }}
+          >
+            Lemon Squeezy
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('appsumo')}
+            style={{
+              flex: 1,
+              padding: '8px',
+              borderRadius: '6px',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: 600,
+              background: activeTab === 'appsumo' ? 'rgba(201, 164, 92, 0.2)' : 'transparent',
+              color: activeTab === 'appsumo' ? 'var(--gold-primary)' : 'var(--text-muted)',
+            }}
+          >
+            AppSumo
+          </button>
+        </div>
+
         {successTier ? (
           <div style={{ textAlign: 'center', padding: '24px 0' }}>
             <div
@@ -194,6 +281,82 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
               Continue to Dashboard
             </button>
           </div>
+        ) : activeTab === 'appsumo' ? (
+          <>
+            <p
+              style={{
+                fontSize: '13.5px',
+                color: 'var(--text-muted)',
+                marginBottom: '18px',
+                lineHeight: 1.5,
+              }}
+            >
+              Paste the code from your AppSumo purchase to unlock your lifetime tier. Tier 1 (BS1-):
+              3 brands, 25 prompts, weekly checks. Tier 2 (BS2-): 5 brands, 50 prompts, daily
+              checks, plus CSV &amp; JSON export.
+            </p>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'var(--text-muted)',
+                  marginBottom: '6px',
+                }}
+              >
+                APPSUMO CODE
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="e.g. BS1-XXXX-XXXX-XXXX"
+                  value={appsumoCode}
+                  onChange={(e) => setAppsumoCode(e.target.value.toUpperCase())}
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    background: 'rgba(8, 25, 46, 0.7)',
+                    border: '1px solid var(--border-medium)',
+                    borderRadius: '8px',
+                    color: '#FFF',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '13px',
+                  }}
+                />
+              </div>
+            </div>
+
+            {appsumoError && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  padding: '10px 12px',
+                  borderRadius: '6px',
+                  color: '#F87171',
+                  fontSize: '13px',
+                  marginBottom: '16px',
+                }}
+              >
+                <AlertCircle size={16} />
+                <span>{appsumoError}</span>
+              </div>
+            )}
+
+            <button
+              onClick={handleRedeemAppSumo}
+              disabled={appsumoLoading}
+              className="btn-gold"
+              style={{ width: '100%', opacity: appsumoLoading ? 0.7 : 1 }}
+            >
+              {appsumoLoading ? 'Redeeming code...' : 'Redeem AppSumo Code'}
+            </button>
+          </>
         ) : (
           <>
             <p
