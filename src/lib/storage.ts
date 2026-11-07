@@ -77,6 +77,7 @@ function mapProfileRow(row: any): UserProfile {
     prompts_limit: Number(row.prompts_limit ?? PLAN_LIMITS.free.promptsLimit),
     check_frequency: (row.check_frequency || 'weekly') as 'weekly' | 'daily',
     white_label_enabled: Boolean(row.white_label_enabled),
+    appsumo_tier: row.appsumo_tier || null,
     created_at: row.created_at || new Date().toISOString(),
   };
 }
