@@ -222,7 +222,7 @@ export default function SeoFixSuggestions({
   };
 
   return (
-    <div className="glass-panel" style={{ padding: '24px', marginBottom: '32px' }}>
+    <div className="m3-card" style={{ padding: '24px', marginBottom: '32px' }}>
       {/* SECTION TOP BAR */}
       <div
         style={{
@@ -235,28 +235,15 @@ export default function SeoFixSuggestions({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--gold-primary)',
-              flexShrink: 0,
-            }}
-          >
+          <div className="icon-tile">
             <Sparkles size={20} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#FFF' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-main)' }}>
                 SEO Fix Suggestions
               </h3>
-              <span className="badge-gold" style={{ fontSize: '11px', padding: '2px 8px' }}>
+              <span className="badge-accent" style={{ fontSize: '11px', padding: '2px 8px' }}>
                 AI Check Audit
               </span>
               {!isPaid && (
@@ -283,10 +270,10 @@ export default function SeoFixSuggestions({
                 value={selectedCheck?.id || ''}
                 onChange={(e) => setSelectedCheckId(e.target.value)}
                 style={{
-                  background: 'rgba(8, 25, 46, 0.85)',
+                  background: 'var(--bg-input)',
                   border: '1px solid var(--border-medium)',
-                  borderRadius: '6px',
-                  color: '#FFF',
+                  borderRadius: '12px',
+                  color: 'var(--text-main)',
                   fontSize: '12px',
                   padding: '5px 8px',
                   maxWidth: '220px',
@@ -306,13 +293,13 @@ export default function SeoFixSuggestions({
           {isPaid && suggestions.length > 0 && !loading && !error && (
             <button
               onClick={handleCopyAll}
-              className="btn-gold"
+              className="btn-primary"
               style={{ fontSize: '12px', padding: '7px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}
               title="Copy all suggestions formatted with priority, issue, and fix"
             >
               {copiedAll ? (
                 <>
-                  <Check size={14} style={{ color: '#08192E' }} />
+                  <Check size={14} style={{ color: '#FFFFFF' }} />
                   <span>All Copied!</span>
                 </>
               ) : (
@@ -330,7 +317,7 @@ export default function SeoFixSuggestions({
       {selectedCheck && (
         <div
           style={{
-            background: 'rgba(255, 255, 255, 0.02)',
+            background: 'var(--bg-tonal)',
             border: '1px solid var(--border-subtle)',
             borderRadius: '8px',
             padding: '10px 14px',
@@ -345,30 +332,30 @@ export default function SeoFixSuggestions({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{ color: 'var(--text-dim)' }}>Audited Query:</span>
-            <strong style={{ color: '#FFF' }}>&ldquo;{selectedCheck.prompt_text}&rdquo;</strong>
+            <strong style={{ color: 'var(--text-main)' }}>&ldquo;{selectedCheck.prompt_text}&rdquo;</strong>
             <span style={{ color: 'var(--text-dim)' }}>&bull; Engine:</span>
             <span className="badge-blue" style={{ textTransform: 'uppercase', fontSize: '10.5px' }}>
               {selectedCheck.provider}
             </span>
             <span style={{ color: 'var(--text-dim)' }}>&bull; Result:</span>
             {selectedCheck.brand_mentioned ? (
-              <span style={{ color: '#34D399', fontWeight: 600 }}>
+              <span style={{ color: 'var(--accent-success-text)', fontWeight: 600 }}>
                 Rank #{selectedCheck.mention_position || 1}
               </span>
             ) : (
-              <span style={{ color: '#F87171', fontWeight: 600 }}>Unlisted / Missing</span>
+              <span style={{ color: 'var(--accent-danger-text)', fontWeight: 600 }}>Unlisted / Missing</span>
             )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-dim)' }}>
             {selectedCheck.competitors_mentioned?.length > 0 && (
               <span>
-                Competitors detected: <strong style={{ color: '#FFF' }}>{selectedCheck.competitors_mentioned.length}</strong>
+                Competitors detected: <strong style={{ color: 'var(--text-main)' }}>{selectedCheck.competitors_mentioned.length}</strong>
               </span>
             )}
             {selectedCheck.cited_sources?.length > 0 && (
               <span>
-                Citations: <strong style={{ color: '#FFF' }}>{selectedCheck.cited_sources.length}</strong>
+                Citations: <strong style={{ color: 'var(--text-main)' }}>{selectedCheck.cited_sources.length}</strong>
               </span>
             )}
           </div>
@@ -378,8 +365,8 @@ export default function SeoFixSuggestions({
       {/* STATE 1: NO CHECKS RUN YET */}
       {validChecks.length === 0 && (
         <div style={{ padding: '36px 20px', textAlign: 'center', color: 'var(--text-muted)' }}>
-          <Info size={28} style={{ color: 'var(--gold-primary)', margin: '0 auto 10px', display: 'block' }} />
-          <h4 style={{ color: '#FFF', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
+          <Info size={28} style={{ color: 'var(--accent-primary)', margin: '0 auto 10px', display: 'block' }} />
+          <h4 style={{ color: 'var(--text-main)', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
             No Completed Check Results Yet
           </h4>
           <p style={{ fontSize: '13px', maxWidth: '480px', margin: '0 auto' }}>
@@ -391,8 +378,8 @@ export default function SeoFixSuggestions({
       {/* STATE 2: LOADING */}
       {validChecks.length > 0 && loading && (
         <div style={{ padding: '40px 20px', textAlign: 'center' }}>
-          <RotateCw size={24} className="animate-spin" style={{ color: 'var(--gold-primary)', margin: '0 auto 12px' }} />
-          <div style={{ fontSize: '14px', fontWeight: 600, color: '#FFF' }}>
+          <RotateCw size={24} className="animate-spin" style={{ color: 'var(--accent-primary)', margin: '0 auto 12px' }} />
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-main)' }}>
             Generating Prioritized SEO Fix Suggestions...
           </div>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
@@ -412,8 +399,8 @@ export default function SeoFixSuggestions({
             borderRadius: '8px',
           }}
         >
-          <AlertCircle size={24} style={{ color: '#F87171', margin: '0 auto 8px', display: 'block' }} />
-          <div style={{ fontSize: '14px', fontWeight: 600, color: '#FFF' }}>
+          <AlertCircle size={24} style={{ color: 'var(--accent-danger-text)', margin: '0 auto 8px', display: 'block' }} />
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-main)' }}>
             Could not generate SEO suggestions for this check.
           </div>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px', maxWidth: '420px', margin: '4px auto 14px' }}>
@@ -436,9 +423,9 @@ export default function SeoFixSuggestions({
           {/* Locked Teaser Banner */}
           <div
             style={{
-              background: 'linear-gradient(135deg, rgba(201, 164, 92, 0.15) 0%, rgba(13, 34, 59, 0.95) 100%)',
-              border: '1px solid rgba(201, 164, 92, 0.45)',
-              borderRadius: '10px',
+              background: 'var(--accent-subtle)',
+              border: '1px solid var(--accent-border)',
+              borderRadius: '12px',
               padding: '20px 24px',
               marginBottom: '20px',
               display: 'flex',
@@ -446,27 +433,14 @@ export default function SeoFixSuggestions({
               justifyContent: 'space-between',
               gap: '20px',
               flexWrap: 'wrap',
-              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.35)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', maxWidth: '700px' }}>
-              <div
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '10px',
-                  background: 'rgba(201, 164, 92, 0.25)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--gold-primary)',
-                  flexShrink: 0,
-                }}
-              >
+              <div className="icon-tile">
                 <Lock size={22} />
               </div>
               <div>
-                <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFF' }}>
+                <h4 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text-main)' }}>
                   Unlock Prioritized AI Search SEO Fixes
                 </h4>
                 <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
@@ -477,7 +451,7 @@ export default function SeoFixSuggestions({
 
             <Link
               href="/pricing"
-              className="btn-gold"
+              className="btn-primary"
               style={{ fontSize: '13px', padding: '9px 18px', display: 'inline-flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}
             >
               <span>Upgrade to Pro to View SEO Fixes</span>
@@ -513,9 +487,9 @@ export default function SeoFixSuggestions({
               <div
                 key={item.id || idx}
                 style={{
-                  background: 'rgba(8, 25, 46, 0.65)',
+                  background: 'var(--bg-sunken)',
                   border: '1px solid var(--border-subtle)',
-                  borderRadius: '8px',
+                  borderRadius: '12px',
                   padding: '16px 18px',
                   position: 'relative',
                   overflow: 'hidden',
@@ -525,9 +499,9 @@ export default function SeoFixSuggestions({
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span
                       style={{
-                        background: item.priority === 'High' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(201, 164, 92, 0.15)',
-                        color: item.priority === 'High' ? '#F87171' : 'var(--gold-primary)',
-                        border: `1px solid ${item.priority === 'High' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(201, 164, 92, 0.3)'}`,
+                        background: item.priority === 'High' ? 'rgba(239, 68, 68, 0.15)' : 'var(--accent-subtle)',
+                        color: item.priority === 'High' ? 'var(--accent-danger-text)' : 'var(--accent-primary)',
+                        border: `1px solid ${item.priority === 'High' ? 'rgba(239, 68, 68, 0.35)' : 'var(--accent-border)'}`,
                         borderRadius: '4px',
                         padding: '2px 7px',
                         fontSize: '10.5px',
@@ -537,7 +511,7 @@ export default function SeoFixSuggestions({
                     >
                       {item.priority} Priority
                     </span>
-                    <strong style={{ fontSize: '13.5px', color: '#FFF' }}>{item.title}</strong>
+                    <strong style={{ fontSize: '13.5px', color: 'var(--text-main)' }}>{item.title}</strong>
                   </div>
 
                   <Link
@@ -545,7 +519,7 @@ export default function SeoFixSuggestions({
                     className="btn-secondary"
                     style={{ fontSize: '11px', padding: '4px 10px', display: 'flex', alignItems: 'center', gap: '4px' }}
                   >
-                    <Lock size={11} style={{ color: 'var(--gold-primary)' }} />
+                    <Lock size={11} style={{ color: 'var(--accent-primary)' }} />
                     <span>Locked</span>
                   </Link>
                 </div>
@@ -557,19 +531,19 @@ export default function SeoFixSuggestions({
 
                 <div
                   style={{
-                    background: 'rgba(201, 164, 92, 0.04)',
-                    border: '1px dashed rgba(201, 164, 92, 0.25)',
-                    borderRadius: '6px',
+                    background: 'var(--accent-subtle)',
+                    border: '1px dashed var(--accent-border)',
+                    borderRadius: '8px',
                     padding: '8px 12px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <span style={{ fontSize: '11.5px', color: 'var(--gold-primary)', filter: 'blur(3.5px)', userSelect: 'none' }}>
+                  <span style={{ fontSize: '11.5px', color: 'var(--accent-primary)', filter: 'blur(3.5px)', userSelect: 'none' }}>
                     Add Schema.org FAQPage structured data answering: What makes your brand different from competitors?
                   </span>
-                  <Link href="/pricing" style={{ fontSize: '11px', color: 'var(--gold-primary)', fontWeight: 700, marginLeft: '12px', whiteSpace: 'nowrap' }}>
+                  <Link href="/pricing" style={{ fontSize: '11px', color: 'var(--accent-primary)', fontWeight: 700, marginLeft: '12px', whiteSpace: 'nowrap' }}>
                     Unlock Concrete Fix &rarr;
                   </Link>
                 </div>
@@ -588,9 +562,9 @@ export default function SeoFixSuggestions({
                 <div
                   key={item.id || idx}
                   style={{
-                    background: 'rgba(8, 25, 46, 0.75)',
+                    background: 'var(--bg-sunken)',
                     border: '1px solid var(--border-subtle)',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     padding: '16px 18px',
                     transition: 'border-color 0.2s ease',
                   }}
@@ -613,19 +587,19 @@ export default function SeoFixSuggestions({
                             item.priority === 'High'
                               ? 'rgba(239, 68, 68, 0.15)'
                               : item.priority === 'Medium'
-                                ? 'rgba(201, 164, 92, 0.15)'
+                                ? 'var(--accent-subtle)'
                                 : 'rgba(56, 189, 248, 0.15)',
                           color:
                             item.priority === 'High'
-                              ? '#F87171'
+                              ? 'var(--accent-danger-text)'
                               : item.priority === 'Medium'
-                                ? 'var(--gold-primary)'
-                                : '#38BDF8',
+                                ? 'var(--accent-primary)'
+                                : 'var(--accent-info-text)',
                           border: `1px solid ${
                             item.priority === 'High'
                               ? 'rgba(239, 68, 68, 0.35)'
                               : item.priority === 'Medium'
-                                ? 'rgba(201, 164, 92, 0.35)'
+                                ? 'var(--accent-border)'
                                 : 'rgba(56, 189, 248, 0.35)'
                           }`,
                           borderRadius: '4px',
@@ -638,7 +612,7 @@ export default function SeoFixSuggestions({
                         {item.priority} Priority
                       </span>
 
-                      <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#FFF' }}>
+                      <h4 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>
                         {item.title}
                       </h4>
                     </div>
@@ -659,8 +633,8 @@ export default function SeoFixSuggestions({
                     >
                       {copiedId === item.id ? (
                         <>
-                          <Check size={12} style={{ color: '#10B981' }} />
-                          <span style={{ color: '#10B981' }}>Copied!</span>
+                          <Check size={12} style={{ color: 'var(--accent-success)' }} />
+                          <span style={{ color: 'var(--accent-success)' }}>Copied!</span>
                         </>
                       ) : (
                         <>
@@ -680,18 +654,18 @@ export default function SeoFixSuggestions({
                   {/* Concrete Fix Container */}
                   <div
                     style={{
-                      background: 'rgba(201, 164, 92, 0.05)',
-                      border: '1px solid rgba(201, 164, 92, 0.22)',
-                      borderRadius: '6px',
+                      background: 'var(--accent-subtle)',
+                      border: '1px solid var(--accent-border)',
+                      borderRadius: '8px',
                       padding: '10px 14px',
                       fontSize: '12.5px',
-                      color: '#F8FAFC',
+                      color: 'var(--text-main)',
                       lineHeight: 1.55,
                     }}
                   >
                     <div
                       style={{
-                        color: 'var(--gold-primary)',
+                        color: 'var(--accent-primary)',
                         fontSize: '11px',
                         fontWeight: 700,
                         textTransform: 'uppercase',
@@ -728,7 +702,7 @@ export default function SeoFixSuggestions({
             <span>
               Suggestions only. BrandSight generates optimization reports and never modifies or publishes to external websites.
             </span>
-            <span style={{ color: 'var(--gold-primary)' }}>
+            <span style={{ color: 'var(--accent-primary)' }}>
               Showing {suggestions.slice(0, 8).length} prioritized fix suggestions
             </span>
           </div>

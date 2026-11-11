@@ -2,13 +2,40 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Eye, Key, ArrowRight, LogIn, LogOut, User, Sparkles, ShieldCheck } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import {
+  Eye,
+  Key,
+  ArrowRight,
+  LogIn,
+  LogOut,
+  User,
+  Home,
+  ScanSearch,
+  Tag,
+  LayoutDashboard,
+} from 'lucide-react';
 import LicenseModal from './LicenseModal';
+import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
+
+const MOBILE_TABS = [
+  { href: '/', label: 'Home', icon: Home },
+  { href: '/#live-demo', label: 'Scanner', icon: ScanSearch },
+  { href: '/pricing', label: 'Pricing', icon: Tag },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+];
 
 export default function Navbar() {
   const [showLicenseModal, setShowLicenseModal] = useState(false);
   const { user, profile, signOut, openAuthModal } = useAuth();
+  const pathname = usePathname();
+
+  const isActiveTab = (href: string) => {
+    if (href === '/') return pathname === '/';
+    if (href === '/#live-demo') return false;
+    return pathname === href || pathname.startsWith(href + '/');
+  };
 
   return (
     <>
@@ -17,9 +44,10 @@ export default function Navbar() {
           position: 'sticky',
           top: 0,
           zIndex: 50,
-          background: 'rgba(8, 25, 46, 0.88)',
+          background: 'var(--nav-bg)',
           backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(201, 164, 92, 0.2)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderBottom: '1px solid var(--border-subtle)',
           padding: '12px 24px',
         }}
       >
@@ -40,13 +68,13 @@ export default function Navbar() {
               style={{
                 width: '38px',
                 height: '38px',
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, #DFBA6F 0%, #C9A45C 100%)',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #339dff 0%, #0a84ff 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#08192E',
-                boxShadow: '0 0 15px rgba(201, 164, 92, 0.4)',
+                color: '#ffffff',
+                boxShadow: '0 2px 10px var(--accent-glow)',
               }}
             >
               <Eye size={22} strokeWidth={2.5} />
@@ -63,17 +91,7 @@ export default function Navbar() {
                 }}
               >
                 <span>BrandSight</span>
-                <span
-                  style={{
-                    color: 'var(--gold-primary)',
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    background: 'rgba(201, 164, 92, 0.15)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    border: '1px solid rgba(201, 164, 92, 0.3)',
-                  }}
-                >
+                <span className="badge-accent" style={{ fontSize: '11px', padding: '2px 6px' }}>
                   AI
                 </span>
               </div>
@@ -90,36 +108,18 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Navigation Links */}
-          <nav
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '20px',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: 'var(--text-muted)',
-            }}
-          >
-            <a href="/#how-it-works" style={{ transition: 'color 0.2s' }}>
-              How It Works
-            </a>
-            <a href="/#live-demo" style={{ transition: 'color 0.2s' }}>
-              Live Scanner
-            </a>
-            <a href="/pricing" style={{ transition: 'color 0.2s' }}>
-              Pricing
-            </a>
-            <a href="/#guardrails" style={{ transition: 'color 0.2s' }}>
-              Guardrails
-            </a>
-            <Link href="/blog" style={{ transition: 'color 0.2s' }}>
-              Blog
-            </Link>
+          {/* Navigation Links (desktop, hidden on mobile: bottom nav takes over) */}
+          <nav className="nav-links">
+            <a href="/#how-it-works">How It Works</a>
+            <a href="/#live-demo">Live Scanner</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/#guardrails">Guardrails</a>
+            <Link href="/blog">Blog</Link>
           </nav>
 
           {/* Right Action / Auth Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <ThemeToggle />
             {user ? (
               /* LOGGED IN STATE */
               <>
@@ -129,14 +129,14 @@ export default function Navbar() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
-                    background: 'rgba(13, 34, 59, 0.9)',
+                    background: 'var(--bg-tonal)',
                     border: '1px solid var(--border-medium)',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     padding: '6px 12px',
                     fontSize: '13px',
                   }}
                 >
-                  <User size={15} style={{ color: 'var(--gold-primary)' }} />
+                  <User size={15} style={{ color: 'var(--accent-primary)' }} />
                   <span
                     style={{
                       maxWidth: '140px',
@@ -159,12 +159,12 @@ export default function Navbar() {
                       textTransform: 'uppercase',
                       background:
                         profile?.plan_tier === 'agency'
-                          ? 'linear-gradient(135deg, #DFBA6F 0%, #C9A45C 100%)'
+                          ? 'linear-gradient(135deg, #339dff 0%, #0a84ff 100%)'
                           : profile?.plan_tier === 'pro'
-                          ? 'rgba(201, 164, 92, 0.25)'
-                          : 'rgba(255, 255, 255, 0.1)',
-                      color: profile?.plan_tier === 'agency' ? '#08192E' : 'var(--gold-primary)',
-                      border: '1px solid rgba(201, 164, 92, 0.35)',
+                          ? 'var(--accent-subtle)'
+                          : 'var(--bg-tonal)',
+                      color: profile?.plan_tier === 'agency' ? '#ffffff' : 'var(--accent-primary)',
+                      border: '1px solid var(--accent-border)',
                     }}
                   >
                     {profile?.plan_tier || 'FREE'}
@@ -176,10 +176,10 @@ export default function Navbar() {
                   <button
                     onClick={() => setShowLicenseModal(true)}
                     className="btn-secondary"
-                    style={{ fontSize: '12px', padding: '7px 12px' }}
+                    style={{ fontSize: '12px', padding: '7px 12px', minHeight: '36px' }}
                     title="Link Lemon Squeezy License Key"
                   >
-                    <Key size={14} style={{ color: 'var(--gold-primary)' }} />
+                    <Key size={14} style={{ color: 'var(--accent-primary)' }} />
                     <span>Link Key</span>
                   </button>
                 )}
@@ -187,8 +187,8 @@ export default function Navbar() {
                 {/* Dashboard Link */}
                 <Link
                   href="/dashboard"
-                  className="btn-gold"
-                  style={{ fontSize: '13px', padding: '7px 14px' }}
+                  className="btn-primary"
+                  style={{ fontSize: '13px', padding: '7px 14px', minHeight: '36px' }}
                 >
                   <span>Dashboard</span>
                   <ArrowRight size={14} />
@@ -201,9 +201,9 @@ export default function Navbar() {
                   style={{
                     fontSize: '12px',
                     padding: '7px 10px',
-                    background: 'transparent',
-                    borderColor: 'rgba(239, 68, 68, 0.25)',
-                    color: '#F87171',
+                    minHeight: '36px',
+                    borderColor: 'rgba(239, 68, 68, 0.3)',
+                    color: 'var(--accent-danger-text)',
                   }}
                   title="Sign out of BrandSight"
                 >
@@ -217,17 +217,17 @@ export default function Navbar() {
                 <button
                   onClick={() => setShowLicenseModal(true)}
                   className="btn-secondary"
-                  style={{ fontSize: '13px', padding: '8px 13px' }}
+                  style={{ fontSize: '13px', padding: '8px 13px', minHeight: '36px' }}
                   title="Activate Lemon Squeezy License Key"
                 >
-                  <Key size={14} style={{ color: 'var(--gold-primary)' }} />
+                  <Key size={14} style={{ color: 'var(--accent-primary)' }} />
                   <span>Activate Key</span>
                 </button>
 
                 <button
                   onClick={() => openAuthModal('login')}
                   className="btn-secondary"
-                  style={{ fontSize: '13px', padding: '8px 14px' }}
+                  style={{ fontSize: '13px', padding: '8px 14px', minHeight: '36px' }}
                 >
                   <LogIn size={15} />
                   <span>Log in</span>
@@ -235,8 +235,8 @@ export default function Navbar() {
 
                 <button
                   onClick={() => openAuthModal('signup')}
-                  className="btn-gold"
-                  style={{ fontSize: '13px', padding: '8px 16px' }}
+                  className="btn-primary"
+                  style={{ fontSize: '13px', padding: '8px 16px', minHeight: '36px' }}
                 >
                   <span>Sign up</span>
                   <ArrowRight size={14} />
@@ -246,6 +246,20 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
+      {/* Mobile bottom navigation (3-5 tabs, per the design standards) */}
+      <nav className="mobile-nav" aria-label="Mobile navigation">
+        {MOBILE_TABS.map((tab) => {
+          const Icon = tab.icon;
+          const active = isActiveTab(tab.href);
+          return (
+            <Link key={tab.href} href={tab.href} className={active ? 'active' : undefined}>
+              <Icon size={20} />
+              <span>{tab.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
 
       {showLicenseModal && <LicenseModal onClose={() => setShowLicenseModal(false)} />}
     </>

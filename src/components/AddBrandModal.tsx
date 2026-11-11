@@ -65,26 +65,12 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(4, 13, 24, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100,
-      padding: '20px',
-    }}>
-      <div className="glass-panel" style={{
+    <div className="modal-overlay">
+      <div className="m3-card modal-panel" style={{
         maxWidth: '520px',
         width: '100%',
         padding: '28px',
         position: 'relative',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
       }}>
         {/* Close Button */}
         <button
@@ -103,21 +89,11 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
 
         {/* Modal Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '10px',
-            background: 'rgba(201, 164, 92, 0.15)',
-            border: '1px solid rgba(201, 164, 92, 0.35)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--gold-primary)',
-          }}>
+          <div className="icon-tile">
             <Building2 size={22} />
           </div>
           <div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)' }}>
               Add New Brand
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -135,7 +111,7 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
             border: '1px solid rgba(239, 68, 68, 0.3)',
             padding: '10px 12px',
             borderRadius: '6px',
-            color: '#F87171',
+            color: 'var(--accent-danger-text)',
             fontSize: '13px',
             marginBottom: '16px',
           }}>
@@ -146,7 +122,7 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               BRAND NAME *
             </label>
             <input
@@ -155,20 +131,12 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
               placeholder="e.g. ViralSplice"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
 
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               OFFICIAL WEBSITE URL *
             </label>
             <input
@@ -177,20 +145,12 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
               placeholder="https://viralsplice.com"
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
 
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               INDUSTRY / NICHE
             </label>
             <input
@@ -198,20 +158,12 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
               placeholder="e.g. AI Video Editor, E-commerce, B2B SaaS"
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
 
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               KNOWN COMPETITORS (Comma-separated)
             </label>
             <input
@@ -219,28 +171,20 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
               placeholder="e.g. Opus Clip, Munch, Klap, CapCut"
               value={competitors}
               onChange={(e) => setCompetitors(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
 
           <div style={{ marginBottom: '22px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               CHECK FREQUENCY
             </label>
             <div style={{ display: 'flex', gap: '10px' }}>
               <label style={{
                 flex: 1,
                 padding: '10px',
-                background: frequency === 'weekly' ? 'rgba(201, 164, 92, 0.15)' : 'rgba(8, 25, 46, 0.5)',
-                border: frequency === 'weekly' ? '1px solid var(--gold-primary)' : '1px solid var(--border-subtle)',
+                background: frequency === 'weekly' ? 'var(--accent-subtle)' : 'var(--bg-sunken)',
+                border: frequency === 'weekly' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 textAlign: 'center',
@@ -253,7 +197,7 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
                   onChange={() => setFrequency('weekly')}
                   style={{ display: 'none' }}
                 />
-                <span style={{ fontWeight: 600, color: frequency === 'weekly' ? 'var(--gold-primary)' : '#FFF' }}>
+                <span style={{ fontWeight: 600, color: frequency === 'weekly' ? 'var(--accent-primary)' : 'var(--text-main)' }}>
                   Weekly Check (All Plans)
                 </span>
               </label>
@@ -261,8 +205,8 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
               <label style={{
                 flex: 1,
                 padding: '10px',
-                background: frequency === 'daily' ? 'rgba(201, 164, 92, 0.15)' : 'rgba(8, 25, 46, 0.5)',
-                border: frequency === 'daily' ? '1px solid var(--gold-primary)' : '1px solid var(--border-subtle)',
+                background: frequency === 'daily' ? 'var(--accent-subtle)' : 'var(--bg-sunken)',
+                border: frequency === 'daily' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
                 borderRadius: '8px',
                 cursor: planTier === 'free' ? 'not-allowed' : 'pointer',
                 opacity: planTier === 'free' ? 0.6 : 1,
@@ -277,7 +221,7 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
                   onChange={() => setFrequency('daily')}
                   style={{ display: 'none' }}
                 />
-                <span style={{ fontWeight: 600, color: frequency === 'daily' ? 'var(--gold-primary)' : '#FFF' }}>
+                <span style={{ fontWeight: 600, color: frequency === 'daily' ? 'var(--accent-primary)' : 'var(--text-main)' }}>
                   Daily Check (Pro/Agency)
                 </span>
               </label>
@@ -293,7 +237,7 @@ export default function AddBrandModal({ planTier, onClose, onSuccess }: AddBrand
             <button type="button" onClick={onClose} className="btn-secondary">
               Cancel
             </button>
-            <button type="submit" disabled={loading} className="btn-gold">
+            <button type="submit" disabled={loading} className="btn-primary">
               {loading ? 'Saving Brand...' : 'Save Brand & Setup Prompts'}
             </button>
           </div>

@@ -62,26 +62,12 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(4, 13, 24, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100,
-      padding: '20px',
-    }}>
-      <div className="glass-panel" style={{
+    <div className="modal-overlay">
+      <div className="m3-card modal-panel" style={{
         maxWidth: '520px',
         width: '100%',
         padding: '28px',
         position: 'relative',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
       }}>
         {/* Close Button */}
         <button
@@ -100,21 +86,11 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
 
         {/* Modal Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '10px',
-            background: 'rgba(201, 164, 92, 0.15)',
-            border: '1px solid rgba(201, 164, 92, 0.35)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--gold-primary)',
-          }}>
+          <div className="icon-tile">
             <HelpCircle size={22} />
           </div>
           <div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)' }}>
               Add Search Query for {brand.name}
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -132,7 +108,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
             border: '1px solid rgba(239, 68, 68, 0.3)',
             padding: '10px 12px',
             borderRadius: '6px',
-            color: '#F87171',
+            color: 'var(--accent-danger-text)',
             fontSize: '13px',
             marginBottom: '16px',
           }}>
@@ -143,7 +119,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               SEARCH QUERY / QUESTION *
             </label>
             <textarea
@@ -152,35 +128,18 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
               placeholder="e.g. best video editing tool for YouTubers"
               value={queryText}
               onChange={(e) => setQueryText(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-                resize: 'none',
-              }}
+              className="field-input"
             />
           </div>
 
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               QUERY CATEGORY
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: '#0D223B',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '13px',
-              }}
+              className="field-input"
             >
               <option value="Product Recommendation">Product Recommendation</option>
               <option value="Competitor Comparison">Competitor Comparison / Alternatives</option>
@@ -191,7 +150,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
 
           {/* Quick Ideas */}
           <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
+            background: 'var(--bg-tonal)',
             border: '1px solid var(--border-subtle)',
             borderRadius: '8px',
             padding: '12px',
@@ -203,7 +162,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
               gap: '6px',
               fontSize: '11px',
               fontWeight: 700,
-              color: 'var(--gold-primary)',
+              color: 'var(--accent-primary)',
               textTransform: 'uppercase',
               marginBottom: '8px',
             }}>
@@ -220,7 +179,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
                     background: 'transparent',
                     border: 'none',
                     textAlign: 'left',
-                    color: '#94A3B8',
+                    color: 'var(--text-muted)',
                     fontSize: '12px',
                     padding: '4px 6px',
                     borderRadius: '4px',
@@ -228,11 +187,11 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
                     transition: 'all 0.15s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#FFF';
-                    e.currentTarget.style.background = 'rgba(201, 164, 92, 0.1)';
+                    e.currentTarget.style.color = 'var(--text-main)';
+                    e.currentTarget.style.background = 'var(--accent-subtle)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#94A3B8';
+                    e.currentTarget.style.color = 'var(--text-muted)';
                     e.currentTarget.style.background = 'transparent';
                   }}
                 >
@@ -246,7 +205,7 @@ export default function AddPromptModal({ brand, onClose, onSuccess }: AddPromptM
             <button type="button" onClick={onClose} className="btn-secondary">
               Cancel
             </button>
-            <button type="submit" disabled={loading} className="btn-gold">
+            <button type="submit" disabled={loading} className="btn-primary">
               {loading ? 'Adding Prompt...' : 'Add Search Query'}
             </button>
           </div>

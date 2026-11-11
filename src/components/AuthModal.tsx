@@ -155,33 +155,18 @@ export default function AuthModal() {
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(4, 13, 24, 0.85)',
-        backdropFilter: 'blur(10px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-        padding: '20px',
-      }}
+      className="modal-overlay"
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
     >
       <div
-        className="glass-panel"
+        className="m3-card modal-panel"
         style={{
           maxWidth: '440px',
           width: '100%',
-          padding: '30px',
+          padding: '28px',
           position: 'relative',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.7)',
-          border: '1px solid rgba(201, 164, 92, 0.25)',
         }}
       >
         {/* Close Button */}
@@ -207,19 +192,7 @@ export default function AuthModal() {
 
         {/* Modal Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <div
-            style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--gold-primary)',
-            }}
-          >
+          <div className="icon-tile">
             {authModalView === 'reset' ? (
               <Mail size={22} />
             ) : authModalView === 'update_password' ? (
@@ -229,7 +202,7 @@ export default function AuthModal() {
             )}
           </div>
           <div>
-            <h2 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
               {authModalView === 'login' && 'Sign In to BrandSight AI'}
               {authModalView === 'signup' && 'Create Your BrandSight Account'}
               {authModalView === 'reset' && 'Reset Your Password'}
@@ -248,8 +221,8 @@ export default function AuthModal() {
         {authModalPrompt && (
           <div
             style={{
-              background: 'rgba(201, 164, 92, 0.12)',
-              border: '1px solid rgba(201, 164, 92, 0.3)',
+              background: 'var(--accent-subtle)',
+              border: '1px solid var(--accent-border)',
               borderRadius: '8px',
               padding: '10px 14px',
               marginBottom: '16px',
@@ -257,10 +230,10 @@ export default function AuthModal() {
               alignItems: 'center',
               gap: '10px',
               fontSize: '12px',
-              color: 'var(--gold-light)',
+              color: 'var(--text-main)',
             }}
           >
-            <Sparkles size={16} style={{ flexShrink: 0, color: 'var(--gold-primary)' }} />
+            <Sparkles size={16} style={{ flexShrink: 0, color: 'var(--accent-primary)' }} />
             <span>{authModalPrompt}</span>
           </div>
         )}
@@ -270,11 +243,11 @@ export default function AuthModal() {
           <div
             style={{
               display: 'flex',
-              background: 'rgba(8, 25, 46, 0.6)',
-              borderRadius: '8px',
+              background: 'var(--bg-tonal)',
+              borderRadius: '12px',
               padding: '4px',
               marginBottom: '20px',
-              border: '1px solid rgba(201, 164, 92, 0.15)',
+              border: '1px solid var(--border-subtle)',
             }}
           >
             <button
@@ -289,8 +262,8 @@ export default function AuthModal() {
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                background: authModalView === 'login' ? 'var(--gold-primary)' : 'transparent',
-                color: authModalView === 'login' ? '#08192E' : 'var(--text-muted)',
+                background: authModalView === 'login' ? 'var(--accent-primary)' : 'transparent',
+                color: authModalView === 'login' ? '#FFFFFF' : 'var(--text-muted)',
               }}
             >
               Sign In
@@ -307,8 +280,8 @@ export default function AuthModal() {
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                background: authModalView === 'signup' ? 'var(--gold-primary)' : 'transparent',
-                color: authModalView === 'signup' ? '#08192E' : 'var(--text-muted)',
+                background: authModalView === 'signup' ? 'var(--accent-primary)' : 'transparent',
+                color: authModalView === 'signup' ? '#FFFFFF' : 'var(--text-muted)',
               }}
             >
               Create Account
@@ -329,11 +302,11 @@ export default function AuthModal() {
               alignItems: 'flex-start',
               gap: '10px',
               fontSize: '12px',
-              color: '#FCA5A5',
+              color: 'var(--accent-danger-text)',
               lineHeight: 1.4,
             }}
           >
-            <AlertCircle size={16} style={{ flexShrink: 0, marginTop: '2px', color: '#EF4444' }} />
+            <AlertCircle size={16} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--accent-danger)' }} />
             <div>
               <strong>Authentication Notice:</strong> {error}
             </div>
@@ -353,11 +326,11 @@ export default function AuthModal() {
               alignItems: 'flex-start',
               gap: '10px',
               fontSize: '12px',
-              color: '#86EFAC',
+              color: 'var(--accent-success-text)',
               lineHeight: 1.4,
             }}
           >
-            <CheckCircle2 size={16} style={{ flexShrink: 0, marginTop: '2px', color: '#22C55E' }} />
+            <CheckCircle2 size={16} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--accent-success)' }} />
             <div>{infoMessage}</div>
           </div>
         )}
@@ -395,16 +368,9 @@ export default function AuthModal() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="founder@yourcompany.com"
                   required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px 10px 38px',
-                    borderRadius: '8px',
-                    background: 'rgba(8, 25, 46, 0.8)',
-                    border: '1px solid var(--border-medium)',
-                    color: '#FFF',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
+                  className="field-input"
+
+                  style={{ paddingLeft: '38px' }}
                 />
               </div>
             </div>
@@ -425,7 +391,7 @@ export default function AuthModal() {
                       background: 'none',
                       border: 'none',
                       fontSize: '11px',
-                      color: 'var(--gold-primary)',
+                      color: 'var(--accent-primary)',
                       cursor: 'pointer',
                       padding: 0,
                     }}
@@ -452,16 +418,9 @@ export default function AuthModal() {
                   placeholder="••••••••••••"
                   minLength={6}
                   required
-                  style={{
-                    width: '100%',
-                    padding: '10px 38px 10px 38px',
-                    borderRadius: '8px',
-                    background: 'rgba(8, 25, 46, 0.8)',
-                    border: '1px solid var(--border-medium)',
-                    color: '#FFF',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
+                  className="field-input"
+
+                  style={{ paddingLeft: '38px', paddingRight: '38px' }}
                 />
                 <button
                   type="button"
@@ -518,16 +477,9 @@ export default function AuthModal() {
                   placeholder="••••••••••••"
                   minLength={6}
                   required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px 10px 38px',
-                    borderRadius: '8px',
-                    background: 'rgba(8, 25, 46, 0.8)',
-                    border: '1px solid var(--border-medium)',
-                    color: '#FFF',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
+                  className="field-input"
+
+                  style={{ paddingLeft: '38px' }}
                 />
               </div>
             </div>
@@ -537,11 +489,12 @@ export default function AuthModal() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-gold"
+            className="btn-primary"
             style={{
               marginTop: '8px',
-              padding: '11px',
+              padding: '12px',
               width: '100%',
+              minHeight: '48px',
               fontSize: '14px',
               fontWeight: 700,
               display: 'flex',
@@ -573,7 +526,7 @@ export default function AuthModal() {
             textAlign: 'center',
             fontSize: '12px',
             color: 'var(--text-dim)',
-            borderTop: '1px solid rgba(201, 164, 92, 0.1)',
+            borderTop: '1px solid var(--border-subtle)',
             paddingTop: '16px',
           }}
         >
@@ -585,7 +538,7 @@ export default function AuthModal() {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--gold-primary)',
+                  color: 'var(--accent-primary)',
                   fontWeight: 600,
                   cursor: 'pointer',
                   padding: 0,
@@ -604,7 +557,7 @@ export default function AuthModal() {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--gold-primary)',
+                  color: 'var(--accent-primary)',
                   fontWeight: 600,
                   cursor: 'pointer',
                   padding: 0,
@@ -623,7 +576,7 @@ export default function AuthModal() {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--gold-primary)',
+                  color: 'var(--accent-primary)',
                   fontWeight: 600,
                   cursor: 'pointer',
                   padding: 0,

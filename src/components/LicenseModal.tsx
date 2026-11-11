@@ -100,30 +100,13 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(4, 13, 24, 0.85)',
-        backdropFilter: 'blur(8px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 100,
-        padding: '20px',
-      }}
-    >
-      <div
-        className="glass-panel"
-        style={{
+    <div className="modal-overlay">
+
+      <div className="m3-card modal-panel" style={{
           maxWidth: '480px',
           width: '100%',
           padding: '28px',
           position: 'relative',
-          boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
         }}
       >
         {/* Close Button */}
@@ -145,23 +128,11 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
 
         {/* Modal Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <div
-            style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--gold-primary)',
-            }}
-          >
+          <div className="icon-tile">
             <Key size={22} />
           </div>
           <div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)' }}>
               {user ? 'Link License to Account' : 'Activate Lemon Squeezy License'}
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -174,8 +145,8 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
         {user && (
           <div
             style={{
-              background: 'rgba(201, 164, 92, 0.1)',
-              border: '1px solid rgba(201, 164, 92, 0.25)',
+              background: 'var(--accent-subtle)',
+              border: '1px solid rgba(10, 132, 255, 0.25)',
               borderRadius: '8px',
               padding: '10px 14px',
               marginBottom: '16px',
@@ -183,10 +154,10 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
               alignItems: 'center',
               gap: '10px',
               fontSize: '12.5px',
-              color: 'var(--gold-light)',
+              color: 'var(--accent-primary)',
             }}
           >
-            <ShieldCheck size={16} style={{ flexShrink: 0, color: 'var(--gold-primary)' }} />
+            <ShieldCheck size={16} style={{ flexShrink: 0, color: 'var(--accent-primary)' }} />
             <span>
               This license key will be tied to <strong>{user.email}</strong>, so your plan stays active
               across all your devices without re-entering the key.
@@ -200,7 +171,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
             display: 'flex',
             gap: '8px',
             marginBottom: '16px',
-            background: 'rgba(8, 25, 46, 0.7)',
+            background: 'var(--bg-sunken)',
             border: '1px solid var(--border-subtle)',
             borderRadius: '8px',
             padding: '4px',
@@ -217,8 +188,8 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
               cursor: 'pointer',
               fontSize: '13px',
               fontWeight: 600,
-              background: activeTab === 'lemonsqueezy' ? 'rgba(201, 164, 92, 0.2)' : 'transparent',
-              color: activeTab === 'lemonsqueezy' ? 'var(--gold-primary)' : 'var(--text-muted)',
+              background: activeTab === 'lemonsqueezy' ? 'var(--accent-subtle)' : 'transparent',
+              color: activeTab === 'lemonsqueezy' ? 'var(--accent-primary)' : 'var(--text-muted)',
             }}
           >
             Lemon Squeezy
@@ -234,8 +205,8 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
               cursor: 'pointer',
               fontSize: '13px',
               fontWeight: 600,
-              background: activeTab === 'appsumo' ? 'rgba(201, 164, 92, 0.2)' : 'transparent',
-              color: activeTab === 'appsumo' ? 'var(--gold-primary)' : 'var(--text-muted)',
+              background: activeTab === 'appsumo' ? 'var(--accent-subtle)' : 'transparent',
+              color: activeTab === 'appsumo' ? 'var(--accent-primary)' : 'var(--text-muted)',
             }}
           >
             AppSumo
@@ -250,22 +221,22 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                 height: '56px',
                 borderRadius: '50%',
                 background: 'rgba(16, 185, 129, 0.15)',
-                border: '2px solid #10B981',
+                border: '2px solid var(--accent-success)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 16px',
-                color: '#10B981',
+                color: 'var(--accent-success)',
               }}
             >
               <CheckCircle2 size={32} />
             </div>
-            <h4 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF', marginBottom: '8px' }}>
+            <h4 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '8px' }}>
               License Successfully Activated!
             </h4>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '20px' }}>
               Your account now has full{' '}
-              <strong style={{ color: 'var(--gold-primary)' }}>{successTier.toUpperCase()}</strong>{' '}
+              <strong style={{ color: 'var(--accent-primary)' }}>{successTier.toUpperCase()}</strong>{' '}
               privileges unlocked.
             </p>
             <button
@@ -275,7 +246,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                   window.location.href = '/dashboard';
                 }
               }}
-              className="btn-gold"
+              className="btn-primary"
               style={{ width: '100%' }}
             >
               Continue to Dashboard
@@ -314,16 +285,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                   placeholder="e.g. BS1-XXXX-XXXX-XXXX"
                   value={appsumoCode}
                   onChange={(e) => setAppsumoCode(e.target.value.toUpperCase())}
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    background: 'rgba(8, 25, 46, 0.7)',
-                    border: '1px solid var(--border-medium)',
-                    borderRadius: '8px',
-                    color: '#FFF',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
-                  }}
+                  className="field-input" style={{ fontFamily: 'var(--font-mono)' }}
                 />
               </div>
             </div>
@@ -338,7 +300,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                   border: '1px solid rgba(239, 68, 68, 0.3)',
                   padding: '10px 12px',
                   borderRadius: '6px',
-                  color: '#F87171',
+                  color: 'var(--accent-danger-text)',
                   fontSize: '13px',
                   marginBottom: '16px',
                 }}
@@ -351,7 +313,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
             <button
               onClick={handleRedeemAppSumo}
               disabled={appsumoLoading}
-              className="btn-gold"
+              className="btn-primary"
               style={{ width: '100%', opacity: appsumoLoading ? 0.7 : 1 }}
             >
               {appsumoLoading ? 'Redeeming code...' : 'Redeem AppSumo Code'}
@@ -389,16 +351,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                   placeholder="e.g. 8A19B-4D2E-9C81-XXXX"
                   value={licenseKey}
                   onChange={(e) => setLicenseKey(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    background: 'rgba(8, 25, 46, 0.7)',
-                    border: '1px solid var(--border-medium)',
-                    borderRadius: '8px',
-                    color: '#FFF',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
-                  }}
+                  className="field-input" style={{ fontFamily: 'var(--font-mono)' }}
                 />
               </div>
             </div>
@@ -413,7 +366,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                   border: '1px solid rgba(239, 68, 68, 0.3)',
                   padding: '10px 12px',
                   borderRadius: '6px',
-                  color: '#F87171',
+                  color: 'var(--accent-danger-text)',
                   fontSize: '13px',
                   marginBottom: '16px',
                 }}
@@ -426,7 +379,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
             <button
               onClick={() => handleActivate()}
               disabled={loading}
-              className="btn-gold"
+              className="btn-primary"
               style={{ width: '100%', opacity: loading ? 0.7 : 1, marginBottom: '20px' }}
             >
               {loading ? 'Validating via Lemon Squeezy...' : user ? 'Link Key to My Account' : 'Activate License'}
@@ -447,7 +400,7 @@ export default function LicenseModal({ onClose, onSuccess }: LicenseModalProps) 
                   gap: '6px',
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: 'var(--gold-primary)',
+                  color: 'var(--accent-primary)',
                   textTransform: 'uppercase',
                   marginBottom: '8px',
                 }}

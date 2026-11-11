@@ -80,11 +80,11 @@ export default function LiveScannerDemo() {
       margin: '60px auto',
       padding: '0 20px',
     }}>
-      <div className="glass-panel" style={{
+      <div className="m3-card" style={{
         padding: '36px',
         position: 'relative',
         overflow: 'hidden',
-        border: '1px solid rgba(201, 164, 92, 0.35)',
+        border: '1px solid var(--accent-border)',
       }}>
         {/* Glow corner badge */}
         <div style={{
@@ -96,11 +96,11 @@ export default function LiveScannerDemo() {
           marginBottom: '24px',
         }}>
           <div>
-            <span className="badge-gold">
+            <span className="badge-accent">
               <Sparkles size={12} />
               Interactive GEO Live Scanner
             </span>
-            <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#FFF', marginTop: '8px' }}>
+            <h3 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-main)', marginTop: '8px' }}>
               Test Any Brand in AI Search Now
             </h3>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
@@ -137,7 +137,7 @@ export default function LiveScannerDemo() {
           marginBottom: '18px',
         }}>
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               BRAND NAME
             </label>
             <input
@@ -145,20 +145,12 @@ export default function LiveScannerDemo() {
               value={brandName}
               onChange={(e) => setBrandName(e.target.value)}
               placeholder="e.g. ViralSplice"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               WEBSITE URL
             </label>
             <input
@@ -166,20 +158,12 @@ export default function LiveScannerDemo() {
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
               placeholder="e.g. https://viralsplice.com"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
 
           <div style={{ gridColumn: 'span 1' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label className="field-label">
               TARGET SEARCH QUERY / PROMPT
             </label>
             <input
@@ -187,15 +171,7 @@ export default function LiveScannerDemo() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="e.g. best video editing tool for YouTubers"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                background: 'rgba(8, 25, 46, 0.7)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '8px',
-                color: '#FFF',
-                fontSize: '14px',
-              }}
+              className="field-input"
             />
           </div>
         </div>
@@ -204,7 +180,7 @@ export default function LiveScannerDemo() {
         <button
           onClick={handleScan}
           disabled={isScanning}
-          className="btn-gold"
+          className="btn-primary"
           style={{ width: '100%', padding: '14px', fontSize: '15px' }}
         >
           {isScanning ? (
@@ -226,10 +202,10 @@ export default function LiveScannerDemo() {
               justifyContent: 'space-between',
               marginBottom: '16px',
             }}>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#FFF' }}>
+              <h4 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-main)' }}>
                 Scan Results for &ldquo;{brandName}&rdquo;
               </h4>
-              <span style={{ fontSize: '12px', color: 'var(--gold-primary)', fontWeight: 600 }}>
+              <span style={{ fontSize: '12px', color: 'var(--accent-primary)', fontWeight: 600 }}>
                 Overall Mention Rate: 67% (2 / 3 Engines)
               </span>
             </div>
@@ -243,7 +219,7 @@ export default function LiveScannerDemo() {
                 <div
                   key={res.provider}
                   style={{
-                    background: 'rgba(8, 25, 46, 0.85)',
+                    background: 'var(--bg-card)',
                     border: res.mentioned ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(239, 68, 68, 0.3)',
                     borderRadius: '12px',
                     padding: '20px',
@@ -259,7 +235,7 @@ export default function LiveScannerDemo() {
                       justifyContent: 'space-between',
                       marginBottom: '12px',
                     }}>
-                      <span style={{ fontSize: '14px', fontWeight: 700, color: '#FFF' }}>
+                      <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>
                         {res.provider}
                       </span>
                       {res.mentioned ? (
@@ -270,7 +246,7 @@ export default function LiveScannerDemo() {
                       ) : (
                         <span style={{
                           background: 'rgba(239, 68, 68, 0.15)',
-                          color: '#F87171',
+                          color: 'var(--accent-danger-text)',
                           fontSize: '11px',
                           fontWeight: 700,
                           padding: '3px 8px',
@@ -305,10 +281,10 @@ export default function LiveScannerDemo() {
                             key={comp}
                             style={{
                               fontSize: '11px',
-                              background: 'rgba(255, 255, 255, 0.05)',
+                              background: 'var(--bg-tonal)',
                               padding: '2px 8px',
                               borderRadius: '4px',
-                              color: '#CBD5E1',
+                              color: 'var(--text-muted)',
                             }}
                           >
                             {comp}
@@ -328,7 +304,7 @@ export default function LiveScannerDemo() {
                             key={src}
                             style={{
                               fontSize: '11px',
-                              color: 'var(--gold-primary)',
+                              color: 'var(--accent-primary)',
                               display: 'inline-flex',
                               alignItems: 'center',
                               gap: '4px',
@@ -349,8 +325,8 @@ export default function LiveScannerDemo() {
             <div style={{
               marginTop: '20px',
               padding: '16px 20px',
-              background: 'rgba(201, 164, 92, 0.1)',
-              border: '1px solid rgba(201, 164, 92, 0.3)',
+              background: 'var(--accent-subtle)',
+              border: '1px solid var(--accent-border)',
               borderRadius: '10px',
               display: 'flex',
               alignItems: 'center',
@@ -359,14 +335,14 @@ export default function LiveScannerDemo() {
               gap: '12px',
             }}>
               <div>
-                <strong style={{ color: '#FFF', fontSize: '14px' }}>
+                <strong style={{ color: 'var(--text-main)', fontSize: '14px' }}>
                   Want continuous daily AI visibility tracking & weekly email reports?
                 </strong>
                 <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                   Set up your brand and 50+ prompts with automatic guardrails and competitor alerts.
                 </p>
               </div>
-              <Link href="/dashboard" className="btn-gold" style={{ fontSize: '13px', padding: '8px 16px' }}>
+              <Link href="/dashboard" className="btn-primary" style={{ fontSize: '13px', padding: '8px 16px' }}>
                 <span>Launch Free Brand Setup</span>
                 <ArrowRight size={14} />
               </Link>

@@ -60,9 +60,9 @@ export default function TrendChart({ data }: TrendChartProps) {
         style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
       >
         <defs>
-          <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C9A45C" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#C9A45C" stopOpacity="0.0" />
+          <linearGradient id="accentGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" style={{ stopColor: 'var(--accent-primary)', stopOpacity: 0.35 }} />
+            <stop offset="100%" style={{ stopColor: 'var(--accent-primary)', stopOpacity: 0 }} />
           </linearGradient>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="coloredBlur" />
@@ -83,13 +83,13 @@ export default function TrendChart({ data }: TrendChartProps) {
                 y1={y}
                 x2={width - paddingX}
                 y2={y}
-                stroke="rgba(255, 255, 255, 0.06)"
+                style={{ stroke: 'var(--border-subtle)' }}
                 strokeDasharray="4 4"
               />
               <text
                 x={paddingX - 10}
                 y={y + 3}
-                fill="#64748B"
+                style={{ fill: 'var(--text-dim)' }}
                 fontSize="10"
                 textAnchor="end"
                 fontFamily="var(--font-mono)"
@@ -101,13 +101,13 @@ export default function TrendChart({ data }: TrendChartProps) {
         })}
 
         {/* Gradient fill under curve */}
-        <path d={areaPath} fill="url(#goldGradient)" />
+        <path d={areaPath} fill="url(#accentGradient)" />
 
         {/* Main Mention Rate Line */}
         <path
           d={linePath}
           fill="none"
-          stroke="#C9A45C"
+          style={{ stroke: 'var(--accent-primary)' }}
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -121,10 +121,13 @@ export default function TrendChart({ data }: TrendChartProps) {
               cx={c.x}
               cy={c.y}
               r={hoveredIndex === i ? 6 : 4}
-              fill="#08192E"
-              stroke="#DFBA6F"
+              style={{
+                fill: 'var(--bg-card)',
+                stroke: 'var(--accent-hover)',
+                transition: 'all 0.15s ease',
+                cursor: 'pointer',
+              }}
               strokeWidth="2.5"
-              style={{ transition: 'all 0.15s ease', cursor: 'pointer' }}
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
             />
@@ -132,7 +135,7 @@ export default function TrendChart({ data }: TrendChartProps) {
             <text
               x={c.x}
               y={height - 10}
-              fill="#94A3B8"
+              style={{ fill: 'var(--text-muted)' }}
               fontSize="10"
               textAnchor="middle"
               fontFamily="var(--font-sans)"
@@ -151,14 +154,13 @@ export default function TrendChart({ data }: TrendChartProps) {
               width="130"
               height="36"
               rx="6"
-              fill="#0E2238"
-              stroke="rgba(201, 164, 92, 0.5)"
+              style={{ fill: 'var(--bg-card)', stroke: 'var(--accent-border)' }}
               strokeWidth="1"
             />
             <text
               x="0"
               y="-1"
-              fill="#FFFFFF"
+              style={{ fill: 'var(--text-main)' }}
               fontSize="11"
               fontWeight="bold"
               textAnchor="middle"
@@ -169,7 +171,7 @@ export default function TrendChart({ data }: TrendChartProps) {
             <text
               x="0"
               y="13"
-              fill="#94A3B8"
+              style={{ fill: 'var(--text-muted)' }}
               fontSize="9"
               textAnchor="middle"
               fontFamily="var(--font-sans)"

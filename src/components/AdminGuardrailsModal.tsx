@@ -41,28 +41,14 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
   }, []);
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(4, 13, 24, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100,
-      padding: '20px',
-    }}>
-      <div className="glass-panel" style={{
+    <div className="modal-overlay">
+      <div className="m3-card modal-panel" style={{
         maxWidth: '820px',
         width: '100%',
         maxHeight: '90vh',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
       }}>
         {/* Header */}
         <div style={{
@@ -73,21 +59,11 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
           justifyContent: 'space-between',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--gold-primary)',
-            }}>
+            <div className="icon-tile">
               <ShieldCheck size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)' }}>
                 Admin Cost & Token Usage Guardrails
               </h3>
               <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -124,12 +100,12 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
             gap: '14px',
             marginBottom: '24px',
           }}>
-            <div className="glass-panel-subtle" style={{ padding: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--gold-primary)', marginBottom: '8px' }}>
+            <div className="m3-card-subtle" style={{ padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-primary)', marginBottom: '8px' }}>
                 <DollarSign size={16} />
                 <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>Total Estimated Spend</span>
               </div>
-              <div style={{ fontSize: '26px', fontWeight: 800, color: '#FFF' }}>
+              <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-main)' }}>
                 ${summary ? summary.totalCost.toFixed(4) : '0.0000'}
               </div>
               <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -137,12 +113,12 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
               </div>
             </div>
 
-            <div className="glass-panel-subtle" style={{ padding: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#60A5FA', marginBottom: '8px' }}>
+            <div className="m3-card-subtle" style={{ padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-info-text)', marginBottom: '8px' }}>
                 <Cpu size={16} />
                 <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>Total Tokens Tracked</span>
               </div>
-              <div style={{ fontSize: '26px', fontWeight: 800, color: '#FFF' }}>
+              <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-main)' }}>
                 {summary ? summary.totalTokens.toLocaleString() : '0'}
               </div>
               <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -150,12 +126,12 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
               </div>
             </div>
 
-            <div className="glass-panel-subtle" style={{ padding: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34D399', marginBottom: '8px' }}>
+            <div className="m3-card-subtle" style={{ padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-success-text)', marginBottom: '8px' }}>
                 <Clock size={16} />
                 <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>24h Cache Engine</span>
               </div>
-              <div style={{ fontSize: '26px', fontWeight: 800, color: '#34D399' }}>
+              <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--accent-success-text)' }}>
                 Active (24h TTL)
               </div>
               <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -166,18 +142,18 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
 
           {/* Provider breakdown */}
           <div style={{ marginBottom: '24px' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#FFF', marginBottom: '12px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '12px' }}>
               Provider Breakdown & Pricing Model
             </h4>
             <div style={{
-              background: 'rgba(8, 25, 46, 0.6)',
+              background: 'var(--bg-sunken)',
               border: '1px solid var(--border-subtle)',
               borderRadius: '8px',
               overflow: 'hidden',
             }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--border-subtle)' }}>
+                  <tr style={{ background: 'var(--bg-tonal)', borderBottom: '1px solid var(--border-subtle)' }}>
                     <th style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>Provider / Model</th>
                     <th style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>Pricing Rate</th>
                     <th style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>Checks Run</th>
@@ -188,17 +164,17 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
                 <tbody>
                   <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                     <td style={{ padding: '10px 14px', fontWeight: 600 }}>OpenAI (gpt-4o-mini)</td>
-                    <td style={{ padding: '10px 14px', color: 'var(--gold-primary)' }}>$0.15/1M in &bull; $0.60/1M out</td>
+                    <td style={{ padding: '10px 14px', color: 'var(--accent-primary)' }}>$0.15/1M in &bull; $0.60/1M out</td>
                     <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.openai?.checks || 0}</td>
                     <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.openai?.tokens?.toLocaleString() || 0}</td>
                     <td style={{ padding: '10px 14px', fontWeight: 600 }}>${(summary?.providerUsage?.openai?.cost || 0).toFixed(6)}</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                     <td style={{ padding: '10px 14px', fontWeight: 600 }}>Google Gemini (1.5 Flash)</td>
-                    <td style={{ padding: '10px 14px', color: '#34D399' }}>Free Tier ($0.00)</td>
+                    <td style={{ padding: '10px 14px', color: 'var(--accent-success-text)' }}>Free Tier ($0.00)</td>
                     <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.gemini?.checks || 0}</td>
                     <td style={{ padding: '10px 14px' }}>{summary?.providerUsage?.gemini?.tokens?.toLocaleString() || 0}</td>
-                    <td style={{ padding: '10px 14px', color: '#34D399', fontWeight: 600 }}>$0.000000</td>
+                    <td style={{ padding: '10px 14px', color: 'var(--accent-success-text)', fontWeight: 600 }}>$0.000000</td>
                   </tr>
                   <tr>
                     <td style={{ padding: '10px 14px', fontWeight: 600 }}>DeepSeek (deepseek-chat)</td>
@@ -214,11 +190,11 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
 
           {/* Recent Token Logs */}
           <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#FFF', marginBottom: '12px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '12px' }}>
               Recent Check Token Logs
             </h4>
             <div style={{
-              background: 'rgba(8, 25, 46, 0.6)',
+              background: 'var(--bg-sunken)',
               border: '1px solid var(--border-subtle)',
               borderRadius: '8px',
               maxHeight: '220px',
@@ -226,7 +202,7 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
             }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--border-subtle)' }}>
+                  <tr style={{ background: 'var(--bg-tonal)', borderBottom: '1px solid var(--border-subtle)' }}>
                     <th style={{ padding: '8px 12px', color: 'var(--text-muted)' }}>Timestamp</th>
                     <th style={{ padding: '8px 12px', color: 'var(--text-muted)' }}>Brand</th>
                     <th style={{ padding: '8px 12px', color: 'var(--text-muted)' }}>Provider</th>
@@ -239,7 +215,7 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
                 <tbody>
                   {logs.length > 0 ? (
                     logs.map((log) => (
-                      <tr key={log.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                      <tr key={log.id} style={{ borderBottom: '1px solid var(--bg-tonal)' }}>
                         <td style={{ padding: '8px 12px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
                           {new Date(log.created_at).toLocaleTimeString()}
                         </td>
@@ -252,7 +228,7 @@ export default function AdminGuardrailsModal({ onClose }: AdminGuardrailsModalPr
                         <td style={{ padding: '8px 12px', fontFamily: 'var(--font-mono)' }}>{log.prompt_tokens}</td>
                         <td style={{ padding: '8px 12px', fontFamily: 'var(--font-mono)' }}>{log.completion_tokens}</td>
                         <td style={{ padding: '8px 12px', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{log.total_tokens}</td>
-                        <td style={{ padding: '8px 12px', fontFamily: 'var(--font-mono)', color: 'var(--gold-primary)' }}>
+                        <td style={{ padding: '8px 12px', fontFamily: 'var(--font-mono)', color: 'var(--accent-primary)' }}>
                           ${log.estimated_cost.toFixed(6)}
                         </td>
                       </tr>

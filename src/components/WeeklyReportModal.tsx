@@ -47,28 +47,14 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(4, 13, 24, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100,
-      padding: '20px',
-    }}>
-      <div className="glass-panel" style={{
+    <div className="modal-overlay">
+      <div className="m3-card modal-panel" style={{
         maxWidth: '680px',
         width: '100%',
         maxHeight: '90vh',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
       }}>
         {/* Modal Header */}
         <div style={{
@@ -79,21 +65,11 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
           justifyContent: 'space-between',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--gold-primary)',
-            }}>
+            <div className="icon-tile">
               <Mail size={18} />
             </div>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#FFF' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-main)' }}>
                 Weekly Executive AI Visibility Report
               </h3>
               <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -122,8 +98,8 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
             style={{
               padding: '12px 0',
               background: 'transparent',
-              borderBottom: activeTab === 'preview' ? '2px solid var(--gold-primary)' : '2px solid transparent',
-              color: activeTab === 'preview' ? 'var(--gold-primary)' : 'var(--text-muted)',
+              borderBottom: activeTab === 'preview' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+              color: activeTab === 'preview' ? 'var(--accent-primary)' : 'var(--text-muted)',
               fontSize: '13px',
               fontWeight: 600,
               display: 'flex',
@@ -140,8 +116,8 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
             style={{
               padding: '12px 0',
               background: 'transparent',
-              borderBottom: activeTab === 'send' ? '2px solid var(--gold-primary)' : '2px solid transparent',
-              color: activeTab === 'send' ? 'var(--gold-primary)' : 'var(--text-muted)',
+              borderBottom: activeTab === 'send' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+              color: activeTab === 'send' ? 'var(--accent-primary)' : 'var(--text-muted)',
               fontSize: '13px',
               fontWeight: 600,
               display: 'flex',
@@ -254,7 +230,7 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
               </p>
 
               <div style={{ marginBottom: '18px' }}>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+                <label className="field-label">
                   RECIPIENT EMAIL ADDRESS
                 </label>
                 <input
@@ -295,7 +271,7 @@ export default function WeeklyReportModal({ brand, stats, onClose }: WeeklyRepor
               <button
                 onClick={handleSend}
                 disabled={sending}
-                className="btn-gold"
+                className="btn-primary"
                 style={{ width: '100%', padding: '12px' }}
               >
                 {sending ? 'Sending Weekly Report...' : 'Send Weekly Report Now'}
