@@ -40,7 +40,7 @@ export default function LandingPage() {
       }}>
         {/* Top Announcement Pill */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-          <span className="badge-gold">
+          <span className="badge-accent">
             <Sparkles size={12} />
             The Generative Engine Optimization (GEO) Tracker
           </span>
@@ -57,10 +57,10 @@ export default function LandingPage() {
           letterSpacing: '-1px',
           maxWidth: '940px',
           margin: '0 auto 24px',
-          color: '#FFF',
+          color: 'var(--text-main)',
         }}>
           Ranking #1 on Google is no longer enough.{' '}
-          <span className="gold-text-gradient">
+          <span className="accent-text-gradient">
             Are AI search engines recommending your brand?
           </span>
         </h1>
@@ -74,8 +74,8 @@ export default function LandingPage() {
           lineHeight: 1.6,
         }}>
           Brands lose up to 60% of search clicks to AI Overviews and chat answers.
-          <strong style={{ color: '#FFF' }}> BrandSight AI </strong> tracks whether your brand appears in{' '}
-          <strong style={{ color: 'var(--gold-primary)' }}>ChatGPT, Google Gemini, and DeepSeek</strong>,
+          <strong style={{ color: 'var(--text-main)' }}> BrandSight AI </strong> tracks whether your brand appears in{' '}
+          <strong style={{ color: 'var(--accent-primary)' }}>ChatGPT, Google Gemini, and DeepSeek</strong>,
           at which ranking position, and which reference URLs are cited.
         </p>
 
@@ -88,13 +88,13 @@ export default function LandingPage() {
           flexWrap: 'wrap',
           marginBottom: '50px',
         }}>
-          <Link href="/dashboard" className="btn-gold" style={{ fontSize: '16px', padding: '14px 28px' }}>
+          <Link href="/dashboard" className="btn-primary" style={{ fontSize: '16px', padding: '14px 28px' }}>
             <span>Start Tracking Free (1 Brand &bull; 5 Prompts)</span>
             <ArrowRight size={18} />
           </Link>
 
           <a href="#live-demo" className="btn-secondary" style={{ fontSize: '15px', padding: '14px 24px' }}>
-            <Search size={16} style={{ color: 'var(--gold-primary)' }} />
+            <Search size={16} style={{ color: 'var(--accent-primary)' }} />
             <span>Try Live AI Scanner</span>
           </a>
         </div>
@@ -112,7 +112,7 @@ export default function LandingPage() {
           letterSpacing: '0.8px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981' }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-success)' }} />
             <span>OpenAI (GPT-4o-mini)</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -120,7 +120,7 @@ export default function LandingPage() {
             <span>Google Gemini (Free Tier)</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#C084FC' }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-purple-text)' }} />
             <span>DeepSeek (deepseek-chat)</span>
           </div>
         </div>
@@ -136,8 +136,8 @@ export default function LandingPage() {
         padding: '0 24px',
       }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <span className="badge-gold">Simple 3-Step Workflow</span>
-          <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#FFF', marginTop: '10px' }}>
+          <span className="badge-accent">Simple 3-Step Workflow</span>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--text-main)', marginTop: '10px' }}>
             How BrandSight AI Tracks Your Visibility
           </h2>
           <p style={{ fontSize: '15px', color: 'var(--text-muted)', maxWidth: '600px', margin: '8px auto 0' }}>
@@ -151,24 +151,24 @@ export default function LandingPage() {
           gap: '24px',
         }}>
           {/* Step 1 */}
-          <div className="glass-panel" style={{ padding: '32px' }}>
+          <div className="m3-card" style={{ padding: '32px' }}>
             <div style={{
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
+              background: 'var(--accent-subtle)',
+              border: '1px solid var(--accent-border)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--gold-primary)',
+              color: 'var(--accent-primary)',
               fontSize: '20px',
               fontWeight: 800,
               marginBottom: '20px',
             }}>
               01
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF', marginBottom: '10px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '10px' }}>
               Set Up Your Brand & Prompts
             </h3>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6 }}>
@@ -177,7 +177,7 @@ export default function LandingPage() {
           </div>
 
           {/* Step 2 */}
-          <div className="glass-panel" style={{ padding: '32px' }}>
+          <div className="m3-card" style={{ padding: '32px' }}>
             <div style={{
               width: '48px',
               height: '48px',
@@ -187,14 +187,14 @@ export default function LandingPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#60A5FA',
+              color: 'var(--accent-info-text)',
               fontSize: '20px',
               fontWeight: 800,
               marginBottom: '20px',
             }}>
               02
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF', marginBottom: '10px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '10px' }}>
               Multi-Engine AI Checks
             </h3>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6 }}>
@@ -203,7 +203,7 @@ export default function LandingPage() {
           </div>
 
           {/* Step 3 */}
-          <div className="glass-panel" style={{ padding: '32px' }}>
+          <div className="m3-card" style={{ padding: '32px' }}>
             <div style={{
               width: '48px',
               height: '48px',
@@ -213,14 +213,14 @@ export default function LandingPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#34D399',
+              color: 'var(--accent-success-text)',
               fontSize: '20px',
               fontWeight: 800,
               marginBottom: '20px',
             }}>
               03
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFF', marginBottom: '10px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '10px' }}>
               Rank Tracking & Weekly Reports
             </h3>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6 }}>
@@ -236,17 +236,17 @@ export default function LandingPage() {
         margin: '80px auto',
         padding: '0 24px',
       }}>
-        <div className="glass-panel" style={{
+        <div className="m3-card" style={{
           padding: '40px',
-          background: 'linear-gradient(135deg, rgba(14, 34, 56, 0.95) 0%, rgba(8, 25, 46, 0.98) 100%)',
-          border: '1px solid rgba(201, 164, 92, 0.4)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--accent-border)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-            <ShieldCheck size={24} style={{ color: 'var(--gold-primary)' }} />
-            <span className="badge-gold">Built-In Cost Guardrails</span>
+            <ShieldCheck size={24} style={{ color: 'var(--accent-primary)' }} />
+            <span className="badge-accent">Built-In Cost Guardrails</span>
           </div>
 
-          <h2 style={{ fontSize: '26px', fontWeight: 800, color: '#FFF', marginBottom: '12px' }}>
+          <h2 style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-main)', marginBottom: '12px' }}>
             Engineered for Maximum Token & Cost Efficiency
           </h2>
           <p style={{ fontSize: '14px', color: 'var(--text-muted)', maxWidth: '720px', lineHeight: 1.6, marginBottom: '28px' }}>
@@ -258,8 +258,8 @@ export default function LandingPage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
             gap: '20px',
           }}>
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '18px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontWeight: 700, color: '#FFF', marginBottom: '6px' }}>
+            <div style={{ background: 'var(--bg-tonal)', padding: '18px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                 ⚡ 24-Hour Prompt Cache
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -267,8 +267,8 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '18px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontWeight: 700, color: '#FFF', marginBottom: '6px' }}>
+            <div style={{ background: 'var(--bg-tonal)', padding: '18px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                 💰 Economical Model Defaults
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -276,8 +276,8 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '18px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ fontWeight: 700, color: '#FFF', marginBottom: '6px' }}>
+            <div style={{ background: 'var(--bg-tonal)', padding: '18px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                 📊 Real-Time Token Auditing
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -295,8 +295,8 @@ export default function LandingPage() {
         padding: '0 24px',
       }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <span className="badge-gold">Transparent Freemium Pricing</span>
-          <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#FFF', marginTop: '10px' }}>
+          <span className="badge-accent">Transparent Freemium Pricing</span>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--text-main)', marginTop: '10px' }}>
             Scale From One Brand to Full Agency Portfolios
           </h2>
           <p style={{ fontSize: '15px', color: 'var(--text-muted)', maxWidth: '600px', margin: '8px auto 0' }}>
@@ -311,12 +311,12 @@ export default function LandingPage() {
           alignItems: 'stretch',
         }}>
           {/* FREE PLAN */}
-          <div className="glass-panel" style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div className="m3-card" style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <span className="badge-blue">Forever Free</span>
-              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#FFF', marginTop: '12px' }}>Free Tier</h3>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-main)', marginTop: '12px' }}>Free Tier</h3>
               <div style={{ margin: '16px 0 20px' }}>
-                <span style={{ fontSize: '36px', fontWeight: 800, color: '#FFF' }}>$0</span>
+                <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-main)' }}>$0</span>
                 <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}> / month</span>
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '24px' }}>
@@ -325,23 +325,23 @@ export default function LandingPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13.5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#10B981' }} />
+                  <Check size={16} style={{ color: 'var(--accent-success)' }} />
                   <span><strong>1 Brand</strong> tracking</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#10B981' }} />
+                  <Check size={16} style={{ color: 'var(--accent-success)' }} />
                   <span><strong>5 Search Prompts</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#10B981' }} />
+                  <Check size={16} style={{ color: 'var(--accent-success)' }} />
                   <span><strong>Weekly auto-checks</strong> (Cost guardrail)</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#10B981' }} />
+                  <Check size={16} style={{ color: 'var(--accent-success)' }} />
                   <span>OpenAI & Google Gemini models</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#10B981' }} />
+                  <Check size={16} style={{ color: 'var(--accent-success)' }} />
                   <span>Weekly email visibility report</span>
                 </div>
               </div>
@@ -355,10 +355,10 @@ export default function LandingPage() {
           </div>
 
           {/* PRO PLAN ($19/mo) */}
-          <div className="glass-panel" style={{
+          <div className="m3-card" style={{
             padding: '32px',
-            border: '2px solid var(--gold-primary)',
-            boxShadow: '0 10px 40px rgba(201, 164, 92, 0.25)',
+            border: '2px solid var(--accent-primary)',
+            boxShadow: '0 10px 40px rgba(10, 132, 255, 0.25)',
             position: 'relative',
             display: 'flex',
             flexDirection: 'column',
@@ -369,8 +369,8 @@ export default function LandingPage() {
               top: '-12px',
               left: '50%',
               transform: 'translateX(-50%)',
-              background: 'linear-gradient(135deg, #DFBA6F 0%, #C9A45C 100%)',
-              color: '#08192E',
+              background: 'linear-gradient(135deg, var(--accent-hover) 0%, var(--accent-primary) 100%)',
+              color: '#ffffff',
               fontSize: '11px',
               fontWeight: 800,
               padding: '3px 12px',
@@ -382,10 +382,10 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <span className="badge-gold">For Growth SaaS & Creators</span>
-              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#FFF', marginTop: '12px' }}>Pro Plan</h3>
+              <span className="badge-accent">For Growth SaaS & Creators</span>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-main)', marginTop: '12px' }}>Pro Plan</h3>
               <div style={{ margin: '16px 0 20px' }}>
-                <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--gold-primary)' }}>$19</span>
+                <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--accent-primary)' }}>$19</span>
                 <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}> / month</span>
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '24px' }}>
@@ -394,27 +394,27 @@ export default function LandingPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13.5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: 'var(--gold-primary)' }} />
+                  <Check size={16} style={{ color: 'var(--accent-primary)' }} />
                   <span><strong>5 Brands</strong> tracking</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: 'var(--gold-primary)' }} />
+                  <Check size={16} style={{ color: 'var(--accent-primary)' }} />
                   <span><strong>50 Search Prompts</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: 'var(--gold-primary)' }} />
+                  <Check size={16} style={{ color: 'var(--accent-primary)' }} />
                   <span><strong>Daily auto-checks</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: 'var(--gold-primary)' }} />
+                  <Check size={16} style={{ color: 'var(--accent-primary)' }} />
                   <span>OpenAI, Gemini & DeepSeek</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: 'var(--gold-primary)' }} />
+                  <Check size={16} style={{ color: 'var(--accent-primary)' }} />
                   <span>Competitor share-of-voice alerts</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: 'var(--gold-primary)' }} />
+                  <Check size={16} style={{ color: 'var(--accent-primary)' }} />
                   <span>Lemon Squeezy License (1 activation)</span>
                 </div>
               </div>
@@ -429,7 +429,7 @@ export default function LandingPage() {
                     setShowLicenseModal(true);
                   }
                 }}
-                className="btn-gold"
+                className="btn-primary"
                 style={{ width: '100%' }}
               >
                 <span>Upgrade to Pro ($19/mo)</span>
@@ -447,12 +447,12 @@ export default function LandingPage() {
           </div>
 
           {/* AGENCY PLAN ($49/mo) */}
-          <div className="glass-panel" style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div className="m3-card" style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <span className="badge-purple">Agencies & Consultancies</span>
-              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#FFF', marginTop: '12px' }}>Agency Plan</h3>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-main)', marginTop: '12px' }}>Agency Plan</h3>
               <div style={{ margin: '16px 0 20px' }}>
-                <span style={{ fontSize: '36px', fontWeight: 800, color: '#FFF' }}>$49</span>
+                <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-main)' }}>$49</span>
                 <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}> / month</span>
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '24px' }}>
@@ -461,27 +461,27 @@ export default function LandingPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13.5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#C084FC' }} />
+                  <Check size={16} style={{ color: 'var(--accent-purple-text)' }} />
                   <span><strong>20 Brands</strong> tracking</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#C084FC' }} />
+                  <Check size={16} style={{ color: 'var(--accent-purple-text)' }} />
                   <span><strong>200 Search Prompts</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#C084FC' }} />
+                  <Check size={16} style={{ color: 'var(--accent-purple-text)' }} />
                   <span><strong>Daily auto-checks</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#C084FC' }} />
+                  <Check size={16} style={{ color: 'var(--accent-purple-text)' }} />
                   <span><strong>White-label executive reports</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#C084FC' }} />
+                  <Check size={16} style={{ color: 'var(--accent-purple-text)' }} />
                   <span>Client CSV & JSON API export</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} style={{ color: '#C084FC' }} />
+                  <Check size={16} style={{ color: 'var(--accent-purple-text)' }} />
                   <span>Dedicated priority support</span>
                 </div>
               </div>
@@ -517,8 +517,8 @@ export default function LandingPage() {
 
       {/* FOOTER */}
       <footer style={{
-        borderTop: '1px solid rgba(201, 164, 92, 0.2)',
-        background: '#040E1B',
+        borderTop: '1px solid var(--accent-subtle)',
+        background: 'var(--bg-secondary)',
         padding: '50px 24px',
         marginTop: '80px',
       }}>
@@ -533,8 +533,8 @@ export default function LandingPage() {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <strong style={{ fontSize: '16px', color: '#FFF' }}>BrandSight AI</strong>
-              <span className="badge-gold">CodeRao</span>
+              <strong style={{ fontSize: '16px', color: 'var(--text-main)' }}>BrandSight AI</strong>
+              <span className="badge-accent">CodeRao</span>
             </div>
             <p style={{ fontSize: '13px', color: 'var(--text-dim)', maxWidth: '420px' }}>
               Generative Engine Optimization (GEO) tracker monitoring ChatGPT, Gemini, and DeepSeek brand recommendations.
@@ -558,7 +558,7 @@ export default function LandingPage() {
           maxWidth: '1200px',
           margin: '30px auto 0',
           paddingTop: '20px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+          borderTop: '1px solid var(--bg-tonal)',
           fontSize: '12px',
           color: 'var(--text-dim)',
           textAlign: 'center',

@@ -19,15 +19,22 @@ export const metadata: Metadata = {
   authors: [{ name: 'CodeRao' }],
 };
 
+/**
+ * Apply the saved theme before first paint so the page never flashes
+ * the wrong theme. Default is Premium Dark Mode.
+ */
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('brandsight-theme')||'dark';var r=t==='system'?(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):t;document.documentElement.setAttribute('data-theme',r);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#08192E" />
+        <meta name="theme-color" content="#0a0f1e" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body>
         <AuthProvider>
