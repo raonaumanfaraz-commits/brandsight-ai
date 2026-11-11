@@ -289,8 +289,8 @@ export default function DashboardPage() {
         {!user && (
           <div
             style={{
-              background: 'linear-gradient(135deg, rgba(8, 25, 46, 0.95) 0%, rgba(13, 34, 59, 0.95) 100%)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--accent-border)',
               borderRadius: '12px',
               padding: '16px 20px',
               marginBottom: '24px',
@@ -299,27 +299,15 @@ export default function DashboardPage() {
               justifyContent: 'space-between',
               gap: '16px',
               flexWrap: 'wrap',
-              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+              boxShadow: 'var(--shadow-2)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '8px',
-                  background: 'rgba(201, 164, 92, 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--gold-primary)',
-                  flexShrink: 0,
-                }}
-              >
+              <div className="icon-tile">
                 <Sparkles size={20} />
               </div>
               <div>
-                <div style={{ fontWeight: 700, fontSize: '14px', color: '#FFF' }}>
+                <div style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-main)' }}>
                   Previewing BrandSight AI in Guest Demo Mode
                 </div>
                 <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>
@@ -339,7 +327,7 @@ export default function DashboardPage() {
               </button>
               <button
                 onClick={() => openAuthModal('signup', 'Create a free account to track your brand.')}
-                className="btn-gold"
+                className="btn-primary"
                 style={{ fontSize: '12.5px', padding: '7px 16px' }}
               >
                 <span>Create Free Account</span>
@@ -353,8 +341,8 @@ export default function DashboardPage() {
         {user && unlinkedKey && (
           <div
             style={{
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.45)',
+              background: 'var(--accent-subtle)',
+              border: '1px solid var(--accent-border)',
               borderRadius: '10px',
               padding: '14px 18px',
               marginBottom: '24px',
@@ -366,8 +354,8 @@ export default function DashboardPage() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Key size={18} style={{ color: 'var(--gold-primary)' }} />
-              <div style={{ fontSize: '13px', color: '#FFF' }}>
+              <Key size={18} style={{ color: 'var(--accent-primary)' }} />
+              <div style={{ fontSize: '13px', color: 'var(--text-main)' }}>
                 Active license key found on this browser (<strong>{unlinkedKey.slice(0, 8)}...</strong>). Link it now to activate Pro on your account across all devices.
               </div>
             </div>
@@ -375,7 +363,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleLinkDetectedKey}
                 disabled={linkingKey}
-                className="btn-gold"
+                className="btn-primary"
                 style={{ fontSize: '12px', padding: '6px 14px' }}
               >
                 {linkingKey ? 'Linking...' : 'Link to My Account'}
@@ -409,17 +397,7 @@ export default function DashboardPage() {
         }}>
           {/* Brand Switcher */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              background: 'rgba(201, 164, 92, 0.15)',
-              border: '1px solid rgba(201, 164, 92, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--gold-primary)',
-            }}>
+            <div className="icon-tile">
               <Building2 size={22} />
             </div>
 
@@ -430,8 +408,8 @@ export default function DashboardPage() {
                     value={selectedBrandId}
                     onChange={(e) => setSelectedBrandId(e.target.value)}
                     style={{
-                      background: '#0D223B',
-                      color: '#FFF',
+                      background: 'var(--bg-input)',
+                      color: 'var(--text-main)',
                       fontWeight: 700,
                       fontSize: '18px',
                       border: '1px solid var(--border-medium)',
@@ -447,7 +425,7 @@ export default function DashboardPage() {
                     ))}
                   </select>
                 ) : (
-                  <span style={{ fontSize: '18px', fontWeight: 700, color: '#FFF' }}>
+                  <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-main)' }}>
                     No Brand Added
                   </span>
                 )}
@@ -478,9 +456,9 @@ export default function DashboardPage() {
               alignItems: 'center',
               gap: '6px',
               fontSize: '12px',
-              color: forceRefresh ? 'var(--gold-primary)' : 'var(--text-muted)',
+              color: forceRefresh ? 'var(--accent-primary)' : 'var(--text-muted)',
               cursor: 'pointer',
-              background: 'rgba(255, 255, 255, 0.03)',
+              background: 'var(--bg-tonal)',
               padding: '6px 10px',
               borderRadius: '6px',
               border: '1px solid var(--border-subtle)',
@@ -497,7 +475,7 @@ export default function DashboardPage() {
             <button
               onClick={() => handleRunChecks()}
               disabled={runningCheck || !selectedBrand}
-              className="btn-gold"
+              className="btn-primary"
               style={{ fontSize: '13px', padding: '8px 16px' }}
             >
               <Play size={14} className={runningCheck ? 'animate-spin' : ''} />
@@ -511,7 +489,7 @@ export default function DashboardPage() {
                 className="btn-secondary"
                 style={{ fontSize: '13px', padding: '8px 14px' }}
               >
-                <Mail size={14} style={{ color: 'var(--gold-primary)' }} />
+                <Mail size={14} style={{ color: 'var(--accent-primary)' }} />
                 <span>Weekly Report</span>
               </button>
             )}
@@ -523,14 +501,14 @@ export default function DashboardPage() {
               style={{ fontSize: '13px', padding: '8px 14px' }}
               title="View API Token and Cost Logs"
             >
-              <ShieldCheck size={14} style={{ color: '#34D399' }} />
+              <ShieldCheck size={14} style={{ color: 'var(--accent-success-text)' }} />
               <span>Cost Guardrails</span>
             </button>
 
             {/* Plan Tier Badge */}
             <button
               onClick={() => setShowLicenseModal(true)}
-              className="badge-gold"
+              className="badge-accent"
               style={{ padding: '6px 12px', cursor: 'pointer', fontSize: '12px' }}
               title="Click to activate Lemon Squeezy license"
             >
@@ -547,14 +525,14 @@ export default function DashboardPage() {
           marginBottom: '28px',
         }}>
           {/* Card 1: Mention Rate */}
-          <div className="glass-panel" style={{ padding: '20px' }}>
+          <div className="m3-card" style={{ padding: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                 AI Mention Rate
               </span>
               <span className="badge-green">▲ +8% W/W</span>
             </div>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--gold-primary)' }}>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--accent-primary)' }}>
               {stats ? `${stats.mentionRate}%` : '0%'}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -563,14 +541,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 2: Average Position */}
-          <div className="glass-panel" style={{ padding: '20px' }}>
+          <div className="m3-card" style={{ padding: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                 Average List Rank
               </span>
-              <span className="badge-gold">Top Recommended</span>
+              <span className="badge-accent">Top Recommended</span>
             </div>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#FFF' }}>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-main)' }}>
               #{stats && stats.avgPosition > 0 ? stats.avgPosition : '1.0'}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -579,14 +557,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 3: Cited Sources */}
-          <div className="glass-panel" style={{ padding: '20px' }}>
+          <div className="m3-card" style={{ padding: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                 Citing Domains
               </span>
               <span className="badge-blue">GEO Citations</span>
             </div>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#FFF' }}>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-main)' }}>
               {stats ? stats.citedSourcesCount : 0}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -595,14 +573,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 4: Prompts Monitored */}
-          <div className="glass-panel" style={{ padding: '20px' }}>
+          <div className="m3-card" style={{ padding: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                 Tracked Queries
               </span>
               <span className="badge-purple">Capacity: {profile?.prompts_limit || 5}</span>
             </div>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#FFF' }}>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-main)' }}>
               {prompts.length} <span style={{ fontSize: '18px', color: 'var(--text-dim)' }}>/ {profile?.prompts_limit || 5}</span>
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '4px' }}>
@@ -619,7 +597,7 @@ export default function DashboardPage() {
           marginBottom: '32px',
         }}>
           {/* Trend Chart Panel */}
-          <div className="glass-panel" style={{ padding: '24px', gridColumn: 'span 2' }}>
+          <div className="m3-card" style={{ padding: '24px', gridColumn: 'span 2' }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -627,14 +605,14 @@ export default function DashboardPage() {
               marginBottom: '16px',
             }}>
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#FFF' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-main)' }}>
                   Visibility History & Mention Trend
                 </h3>
                 <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                   Percentage of AI responses featuring {selectedBrand?.name} over time
                 </p>
               </div>
-              <span style={{ fontSize: '12px', color: 'var(--gold-primary)', fontWeight: 600 }}>
+              <span style={{ fontSize: '12px', color: 'var(--accent-primary)', fontWeight: 600 }}>
                 ● Mention Rate % &bull; 7-Day Trend
               </span>
             </div>
@@ -643,27 +621,27 @@ export default function DashboardPage() {
           </div>
 
           {/* AI Providers Breakdown */}
-          <div className="glass-panel" style={{ padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#FFF', marginBottom: '16px' }}>
+          <div className="m3-card" style={{ padding: '24px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-main)', marginBottom: '16px' }}>
               AI Engine Comparison
             </h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {/* OpenAI */}
               <div style={{
-                background: 'rgba(8, 25, 46, 0.7)',
+                background: 'var(--bg-sunken)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: '8px',
                 padding: '12px 14px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFF' }}>ChatGPT (gpt-4o-mini)</span>
-                  <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--gold-primary)' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)' }}>ChatGPT (gpt-4o-mini)</span>
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--accent-primary)' }}>
                     {stats?.providerBreakdown.openai.rate || 0}%
                   </span>
                 </div>
-                <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
-                  <div style={{ width: `${stats?.providerBreakdown.openai.rate || 0}%`, height: '100%', background: 'var(--gold-primary)' }} />
+                <div style={{ width: '100%', height: '6px', background: 'var(--bg-tonal)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: `${stats?.providerBreakdown.openai.rate || 0}%`, height: '100%', background: 'var(--accent-primary)' }} />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
                   <span>{stats?.providerBreakdown.openai.mentions || 0} mentions</span>
@@ -673,19 +651,19 @@ export default function DashboardPage() {
 
               {/* Gemini */}
               <div style={{
-                background: 'rgba(8, 25, 46, 0.7)',
+                background: 'var(--bg-sunken)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: '8px',
                 padding: '12px 14px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFF' }}>Google Gemini (1.5 Flash)</span>
-                  <span style={{ fontSize: '13px', fontWeight: 800, color: '#38BDF8' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)' }}>Google Gemini (1.5 Flash)</span>
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--accent-info-text)' }}>
                     {stats?.providerBreakdown.gemini.rate || 0}%
                   </span>
                 </div>
-                <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
-                  <div style={{ width: `${stats?.providerBreakdown.gemini.rate || 0}%`, height: '100%', background: '#38BDF8' }} />
+                <div style={{ width: '100%', height: '6px', background: 'var(--bg-tonal)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: `${stats?.providerBreakdown.gemini.rate || 0}%`, height: '100%', background: 'var(--accent-info-text)' }} />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
                   <span>{stats?.providerBreakdown.gemini.mentions || 0} mentions</span>
@@ -695,21 +673,21 @@ export default function DashboardPage() {
 
               {/* DeepSeek */}
               <div style={{
-                background: 'rgba(8, 25, 46, 0.7)',
+                background: 'var(--bg-sunken)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: '8px',
                 padding: '12px 14px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFF' }}>DeepSeek (deepseek-chat)</span>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)' }}>DeepSeek (deepseek-chat)</span>
                   {deepseekStatus === 'configured' && (
-                    <span style={{ fontSize: '13px', fontWeight: 800, color: '#34D399' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--accent-success-text)' }}>
                       {stats?.providerBreakdown.deepseek.rate || 0}%
                     </span>
                   )}
                   {deepseekStatus === 'coming_soon' && <span className="badge-purple">Coming Soon</span>}
                   {deepseekStatus === 'failed' && (
-                    <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#F87171', padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 600 }}>
+                    <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: 'var(--accent-danger-text)', padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 600 }}>
                       Check failed
                     </span>
                   )}
@@ -717,8 +695,8 @@ export default function DashboardPage() {
                 </div>
                 {deepseekStatus === 'configured' && (
                   <>
-                    <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ width: `${stats?.providerBreakdown.deepseek.rate || 0}%`, height: '100%', background: '#34D399' }} />
+                    <div style={{ width: '100%', height: '6px', background: 'var(--bg-tonal)', borderRadius: '3px', overflow: 'hidden' }}>
+                      <div style={{ width: `${stats?.providerBreakdown.deepseek.rate || 0}%`, height: '100%', background: 'var(--accent-success-text)' }} />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
                       <span>{stats?.providerBreakdown.deepseek.mentions || 0} mentions</span>
@@ -747,7 +725,7 @@ export default function DashboardPage() {
         </div>
 
         {/* PROMPT SET MANAGER SECTION */}
-        <div className="glass-panel" style={{ padding: '24px', marginBottom: '32px' }}>
+        <div className="m3-card" style={{ padding: '24px', marginBottom: '32px' }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -757,7 +735,7 @@ export default function DashboardPage() {
             marginBottom: '18px',
           }}>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#FFF' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-main)' }}>
                 Monitored Prompts for {selectedBrand?.name}
               </h3>
               <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -767,7 +745,7 @@ export default function DashboardPage() {
 
             <button
               onClick={handleOpenAddPrompt}
-              className="btn-gold"
+              className="btn-primary"
               style={{ fontSize: '13px', padding: '8px 14px' }}
             >
               <Plus size={14} />
@@ -785,7 +763,7 @@ export default function DashboardPage() {
                   <div
                     key={p.id}
                     style={{
-                      background: 'rgba(8, 25, 46, 0.6)',
+                      background: 'var(--bg-sunken)',
                       border: '1px solid var(--border-subtle)',
                       borderRadius: '8px',
                       padding: '14px 18px',
@@ -798,8 +776,8 @@ export default function DashboardPage() {
                   >
                     <div style={{ flex: 1, minWidth: '260px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                        <span className="badge-gold">{p.category || 'General'}</span>
-                        <strong style={{ fontSize: '14px', color: '#FFF' }}>
+                        <span className="badge-accent">{p.category || 'General'}</span>
+                        <strong style={{ fontSize: '14px', color: 'var(--text-main)' }}>
                           &ldquo;{p.query_text}&rdquo;
                         </strong>
                       </div>
@@ -807,11 +785,11 @@ export default function DashboardPage() {
                         Status:{' '}
                         {lastCheck ? (
                           lastCheck.brand_mentioned ? (
-                            <span style={{ color: '#34D399', fontWeight: 600 }}>
+                            <span style={{ color: 'var(--accent-success-text)', fontWeight: 600 }}>
                               Mentioned (Rank #{lastCheck.mention_position || 1}) via {lastCheck.provider}
                             </span>
                           ) : (
-                            <span style={{ color: '#F87171' }}>Missing in last check ({lastCheck.provider})</span>
+                            <span style={{ color: 'var(--accent-danger-text)' }}>Missing in last check ({lastCheck.provider})</span>
                           )
                         ) : (
                           <span>Pending first run</span>
@@ -850,7 +828,7 @@ export default function DashboardPage() {
             ) : (
               <div style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
                 <p style={{ marginBottom: '12px' }}>No search queries added yet for this brand.</p>
-                <button onClick={() => setShowAddPrompt(true)} className="btn-gold" style={{ fontSize: '13px' }}>
+                <button onClick={() => setShowAddPrompt(true)} className="btn-primary" style={{ fontSize: '13px' }}>
                   <Plus size={14} />
                   <span>Add First Query</span>
                 </button>
@@ -870,7 +848,7 @@ export default function DashboardPage() {
         )}
 
         {/* CHECKS HISTORY AUDIT TABLE */}
-        <div className="glass-panel" style={{ padding: '24px' }}>
+        <div className="m3-card" style={{ padding: '24px' }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -880,7 +858,7 @@ export default function DashboardPage() {
             marginBottom: '18px',
           }}>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#FFF' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-main)' }}>
                 AI Check Audit Log
               </h3>
               <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -895,9 +873,9 @@ export default function DashboardPage() {
                   key={prov}
                   onClick={() => setSelectedProviderFilter(prov)}
                   style={{
-                    background: selectedProviderFilter === prov ? 'rgba(201, 164, 92, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                    color: selectedProviderFilter === prov ? 'var(--gold-primary)' : 'var(--text-muted)',
-                    border: selectedProviderFilter === prov ? '1px solid var(--gold-primary)' : '1px solid var(--border-subtle)',
+                    background: selectedProviderFilter === prov ? 'var(--accent-subtle)' : 'var(--bg-tonal)',
+                    color: selectedProviderFilter === prov ? 'var(--accent-primary)' : 'var(--text-muted)',
+                    border: selectedProviderFilter === prov ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
                     padding: '4px 10px',
                     borderRadius: '6px',
                     fontSize: '12px',
@@ -914,7 +892,7 @@ export default function DashboardPage() {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
               <thead>
-                <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--border-subtle)' }}>
+                <tr style={{ background: 'var(--bg-tonal)', borderBottom: '1px solid var(--border-subtle)' }}>
                   <th style={{ padding: '12px', color: 'var(--text-muted)' }}>Timestamp</th>
                   <th style={{ padding: '12px', color: 'var(--text-muted)' }}>Engine</th>
                   <th style={{ padding: '12px', color: 'var(--text-muted)' }}>Query</th>
@@ -927,7 +905,7 @@ export default function DashboardPage() {
               <tbody>
                 {filteredChecks.length > 0 ? (
                   filteredChecks.map((c) => (
-                    <tr key={c.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                    <tr key={c.id} style={{ borderBottom: '1px solid var(--bg-tonal)' }}>
                       <td style={{ padding: '12px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', fontSize: '11px', whiteSpace: 'nowrap' }}>
                         {new Date(c.checked_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </td>
@@ -936,7 +914,7 @@ export default function DashboardPage() {
                           {c.provider}
                         </span>
                       </td>
-                      <td style={{ padding: '12px', maxWidth: '240px', color: '#FFF' }}>
+                      <td style={{ padding: '12px', maxWidth: '240px', color: 'var(--text-main)' }}>
                         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {c.prompt_text || 'Search Query'}
                         </div>
@@ -950,7 +928,7 @@ export default function DashboardPage() {
                         {c.status === 'skipped' ? (
                           <span className="badge-purple">Coming Soon</span>
                         ) : c.status === 'failed' ? (
-                          <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#F87171', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '999px' }}>
+                          <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: 'var(--accent-danger-text)', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '999px' }}>
                             Check failed
                           </span>
                         ) : c.brand_mentioned ? (
@@ -961,7 +939,7 @@ export default function DashboardPage() {
                         ) : (
                           <span style={{
                             background: 'rgba(239, 68, 68, 0.15)',
-                            color: '#F87171',
+                            color: 'var(--accent-danger-text)',
                             fontSize: '11px',
                             fontWeight: 700,
                             padding: '3px 8px',
@@ -976,7 +954,7 @@ export default function DashboardPage() {
                         <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                           {c.competitors_mentioned && c.competitors_mentioned.length > 0 ? (
                             c.competitors_mentioned.map((comp) => (
-                              <span key={comp} style={{ fontSize: '11px', background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px' }}>
+                              <span key={comp} style={{ fontSize: '11px', background: 'var(--bg-tonal)', padding: '2px 6px', borderRadius: '4px' }}>
                                 {comp}
                               </span>
                             ))
@@ -996,7 +974,7 @@ export default function DashboardPage() {
                                 rel="noreferrer"
                                 style={{
                                   fontSize: '11px',
-                                  color: 'var(--gold-primary)',
+                                  color: 'var(--accent-primary)',
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '3px',
