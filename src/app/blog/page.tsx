@@ -25,7 +25,7 @@ export default function BlogIndexPage() {
         {/* Header Header */}
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-            <span className="badge-gold">
+            <span className="badge-accent">
               <Sparkles size={12} />
               GEO & AI Search Intelligence
             </span>
@@ -36,10 +36,10 @@ export default function BlogIndexPage() {
             fontWeight: 800,
             lineHeight: 1.2,
             letterSpacing: '-0.5px',
-            color: '#FFF',
+            color: 'var(--text-main)',
             marginBottom: '16px',
           }}>
-            BrandSight AI <span className="gold-text-gradient">Blog & Insights</span>
+            BrandSight AI <span className="accent-text-gradient">Blog & Insights</span>
           </h1>
 
           <p style={{
@@ -64,7 +64,7 @@ export default function BlogIndexPage() {
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="glass-panel"
+              className="m3-card"
               style={{
                 padding: '32px',
                 display: 'flex',
@@ -79,7 +79,7 @@ export default function BlogIndexPage() {
                   alignItems: 'center',
                   gap: '8px',
                   fontSize: '12px',
-                  color: 'var(--gold-primary)',
+                  color: 'var(--accent-primary)',
                   marginBottom: '12px',
                   fontFamily: 'var(--font-mono)',
                 }}>
@@ -97,12 +97,12 @@ export default function BlogIndexPage() {
                   fontSize: '20px',
                   fontWeight: 700,
                   lineHeight: 1.35,
-                  color: '#FFF',
+                  color: 'var(--text-main)',
                   marginBottom: '12px',
                 }}>
                   <Link
                     href={`/blog/${post.slug}`}
-                    style={{ color: '#FFF', transition: 'color 0.15s ease' }}
+                    style={{ color: 'var(--text-main)', transition: 'color 0.15s ease' }}
                   >
                     {post.title}
                   </Link>
@@ -121,7 +121,7 @@ export default function BlogIndexPage() {
               <div>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="btn-outline-gold"
+                  className="btn-outline"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 >
                   <span>Read Article</span>
@@ -133,20 +133,19 @@ export default function BlogIndexPage() {
         </div>
 
         {/* Bottom CTA Block */}
-        <div className="glass-panel" style={{
+        <div className="m3-card" style={{
           padding: '40px',
           textAlign: 'center',
-          background: 'linear-gradient(135deg, rgba(14, 34, 56, 0.95) 0%, rgba(8, 25, 46, 0.98) 100%)',
-          border: '1px solid rgba(201, 164, 92, 0.4)',
+          border: '1px solid var(--accent-border)',
         }}>
-          <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#FFF', marginBottom: '10px' }}>
+          <h3 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-main)', marginBottom: '10px' }}>
             Is ChatGPT Recommending Your Brand?
           </h3>
           <p style={{ fontSize: '14px', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 24px' }}>
             Track your mention rate, recommendation rankings, and cited sources across OpenAI, Google Gemini, and DeepSeek in real-time.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
-            <Link href="/dashboard" className="btn-gold" style={{ fontSize: '14px', padding: '12px 24px' }}>
+            <Link href="/dashboard" className="btn-primary" style={{ fontSize: '14px', padding: '12px 24px' }}>
               <span>Launch Free Brand Setup</span>
               <ArrowRight size={15} />
             </Link>
@@ -159,8 +158,8 @@ export default function BlogIndexPage() {
 
       {/* Footer */}
       <footer style={{
-        borderTop: '1px solid rgba(201, 164, 92, 0.2)',
-        background: '#040E1B',
+        borderTop: '1px solid var(--border-subtle)',
+        background: 'var(--bg-secondary)',
         padding: '40px 24px',
       }}>
         <div style={{
@@ -174,8 +173,8 @@ export default function BlogIndexPage() {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <strong style={{ fontSize: '16px', color: '#FFF' }}>BrandSight AI</strong>
-              <span className="badge-gold">CodeRao</span>
+              <strong style={{ fontSize: '16px', color: 'var(--text-main)' }}>BrandSight AI</strong>
+              <span className="badge-accent">CodeRao</span>
             </div>
             <p style={{ fontSize: '13px', color: 'var(--text-dim)' }}>
               Generative Engine Optimization (GEO) Tracker &bull; https://brandsight-ai.coderao.com
