@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               alignItems: 'center',
               gap: '6px',
               fontSize: '13px',
-              color: 'var(--gold-primary)',
+              color: 'var(--accent-primary)',
               fontWeight: 600,
             }}
           >
@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             alignItems: 'center',
             gap: '8px',
             fontSize: '13px',
-            color: 'var(--gold-primary)',
+            color: 'var(--accent-primary)',
             marginBottom: '14px',
             fontFamily: 'var(--font-mono)',
           }}>
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             fontWeight: 800,
             lineHeight: 1.25,
             letterSpacing: '-0.5px',
-            color: '#FFF',
+            color: 'var(--text-main)',
             marginBottom: '16px',
           }}>
             {post.title}
@@ -125,20 +125,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Closing CTA Block */}
         <div
-          className="glass-panel"
+          className="m3-card"
           style={{
             marginTop: '60px',
             padding: '36px',
-            background: 'linear-gradient(135deg, rgba(14, 34, 56, 0.95) 0%, rgba(8, 25, 46, 0.98) 100%)',
-            border: '1px solid rgba(201, 164, 92, 0.4)',
+            border: '1px solid var(--accent-border)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-            <Sparkles size={18} style={{ color: 'var(--gold-primary)' }} />
-            <span className="badge-gold">Audit Your Brand</span>
+            <Sparkles size={18} style={{ color: 'var(--accent-primary)' }} />
+            <span className="badge-accent">Audit Your Brand</span>
           </div>
 
-          <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#FFF', marginBottom: '8px' }}>
+          <h3 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-main)', marginBottom: '8px' }}>
             Track Your Brand in ChatGPT, Gemini & DeepSeek
           </h3>
 
@@ -152,18 +151,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             gap: '10px',
             marginBottom: '24px',
             fontSize: '13px',
-            color: '#CBD5E1',
+            color: 'var(--text-muted)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={15} style={{ color: '#10B981' }} />
+              <CheckCircle2 size={15} style={{ color: 'var(--accent-success)' }} />
               <span><strong>Free Plan:</strong> 1 Brand, 5 Prompts</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={15} style={{ color: 'var(--gold-primary)' }} />
+              <CheckCircle2 size={15} style={{ color: 'var(--accent-primary)' }} />
               <span><strong>Pro ($19/mo):</strong> 5 Brands, Daily checks</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={15} style={{ color: '#C084FC' }} />
+              <CheckCircle2 size={15} style={{ color: 'var(--accent-purple-text)' }} />
               <span><strong>Agency ($49/mo):</strong> 20 Brands + Reports</span>
             </div>
           </div>
@@ -171,7 +170,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <Link
               href="https://brandsight-ai.coderao.com"
-              className="btn-gold"
+              className="btn-primary"
               style={{ fontSize: '14px', padding: '12px 22px' }}
             >
               <span>Get Started Free on BrandSight AI</span>
@@ -191,8 +190,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* Footer */}
       <footer style={{
-        borderTop: '1px solid rgba(201, 164, 92, 0.2)',
-        background: '#040E1B',
+        borderTop: '1px solid var(--border-subtle)',
+        background: 'var(--bg-secondary)',
         padding: '40px 24px',
       }}>
         <div style={{
@@ -206,8 +205,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <strong style={{ fontSize: '16px', color: '#FFF' }}>BrandSight AI</strong>
-              <span className="badge-gold">CodeRao</span>
+              <strong style={{ fontSize: '16px', color: 'var(--text-main)' }}>BrandSight AI</strong>
+              <span className="badge-accent">CodeRao</span>
             </div>
             <p style={{ fontSize: '13px', color: 'var(--text-dim)' }}>
               Generative Engine Optimization (GEO) &bull; https://brandsight-ai.coderao.com
